@@ -81,7 +81,12 @@ HWND Window::GetHandle() const {
     return mHandle;
 }
 
-Size Window::GetSize() const
-{
+Size Window::GetSize() const {
     return mSize;
+}
+
+RECT Window::GetRect() const {
+    RECT rc;
+    GetClientRect(mHandle, &rc);
+    return rc;
 }

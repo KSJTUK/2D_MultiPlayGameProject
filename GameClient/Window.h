@@ -25,6 +25,7 @@ public:
 public:
     HWND GetHandle() const;
     Size GetSize() const;
+    RECT GetRect() const;
 
 private:
     HWND mHandle;

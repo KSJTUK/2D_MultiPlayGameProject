@@ -1,11 +1,11 @@
 #pragma once
 
-std::wstring to_wstring(std::string_view str)
+inline std::wstring to_wstring(std::string_view str)
 {
 	return std::wstring{ str.begin(), str.end() };
 }
 
-void CheckHR(const HRESULT& hr, const std::source_location& location)
+inline void CheckHR(const HRESULT& hr, const std::source_location& location)
 {
 	if (FAILED(hr)) {
 		_com_error err{ hr };
@@ -15,4 +15,9 @@ void CheckHR(const HRESULT& hr, const std::source_location& location)
 		::MessageBoxW(nullptr, result.c_str(), L"Error", MB_OK | MB_ICONERROR);
 		PostQuitMessage(EXIT_FAILURE);
 	}
+}
+
+inline D2D1::ColorF Color(const D2D1::ColorF::Enum& colorEnum, float alpha=1.0f)
+{
+	return D2D1::ColorF{ colorEnum, alpha };
 }

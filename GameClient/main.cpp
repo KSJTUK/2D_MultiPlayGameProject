@@ -29,6 +29,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
         else {
             /* TODO : 게임 루프(로직)가 들어갈 부분 */
+            gameFramework.Render();
         }
     }
 

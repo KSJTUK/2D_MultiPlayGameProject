@@ -31,5 +31,7 @@ private:
     ComPtr<ID2D1HwndRenderTarget> mRenderTarget; /* Window  대상 렌더타겟 */
 
     ComPtr<IWICImagingFactory> mWICFactory;
-    ComPtr<ID2D1Bitmap> mTestBitmap; /* 이미지 로딩 테스트용 */
+    std::unique_ptr<class Image> mTestImage; /* 이미지 로딩 테스트용 */
+    std::unique_ptr<class Sprite> mTestSprite; /* 스프라이트 테스트용 */
+    std::unique_ptr<class Sprite> mTestSprite2;
 };

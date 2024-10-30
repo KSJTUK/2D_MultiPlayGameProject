@@ -17,6 +17,9 @@
     <Filter Include="Frame">
       <UniqueIdentifier>{a34615fb-7efc-44f2-b151-ac408f751856}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Image">
+      <UniqueIdentifier>{52321c18-0a1d-4d81-bef2-0fa6bda0f4ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -40,8 +43,14 @@
     <ClInclude Include="GameFrame.h">
       <Filter>Frame</Filter>
     </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Image</Filter>
+    </ClInclude>
     <ClInclude Include="ImageLoader.h">
-      <Filter>Utils</Filter>
+      <Filter>Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>Image</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -63,8 +72,14 @@
     <ClCompile Include="GameFrame.cpp">
       <Filter>Frame</Filter>
     </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Image</Filter>
+    </ClCompile>
     <ClCompile Include="ImageLoader.cpp">
-      <Filter>Utils</Filter>
+      <Filter>Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>Image</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

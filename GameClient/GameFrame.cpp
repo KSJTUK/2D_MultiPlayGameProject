@@ -3,7 +3,8 @@
 #include "Window.h" /* 메인 윈도우 생성 */
 
 #include "Utils.h" /* 에러 및 디버그 용 */
-#include "ImageLoader.h"
+#include "Image.h"
+#include "Sprite.h"
 
 //////////////////////////////////////////////////////////////////////////
 //																		//
@@ -62,7 +63,9 @@ void GameFrame::InitWIC() {
     hr = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(mWICFactory.GetAddressOf()));
     CheckHR(hr, std::source_location::current());
 
-    mTestBitmap = Image::ImageLoad(mD2Factory, mWICFactory, mRenderTarget, L"Bridge_ALL.png");
+    mTestImage = std::make_unique<Image>(mD2Factory, mWICFactory, mRenderTarget, L"Bridge_ALL.png");
+    mTestSprite = std::make_unique<Sprite>(mD2Factory, mWICFactory, mRenderTarget, L"Rocks_04.png", D2D1::SizeU(8, 1));
+    mTestSprite2 = std::make_unique<Sprite>(mD2Factory, mWICFactory, mRenderTarget, L"Explosions.png", D2D1::SizeU(9, 1));
 }
 
 void GameFrame::Render() {
@@ -70,14 +73,25 @@ void GameFrame::Render() {
 
     mRenderTarget->Clear(Color(D2D1::ColorF::Gray));
 
-    ID2D1SolidColorBrush* pBrush;
-    mRenderTarget->CreateSolidColorBrush(Color(D2D1::ColorF::Red), &pBrush);
-    D2D1_ELLIPSE ellipse{ D2D1::Point2F(100.0f, 100.0f), 100.0f, 100.0f };
-    mRenderTarget->FillEllipse(ellipse, pBrush);
-    pBrush->Release();
+    //ID2D1SolidColorBrush* pBrush;
+    //mRenderTarget->CreateSolidColorBrush(Color(D2D1::ColorF::Red), &pBrush);
+    //D2D1_ELLIPSE ellipse{ D2D1::Point2F(100.0f, 100.0f), 100.0f, 100.0f };
+    //mRenderTarget->FillEllipse(ellipse, pBrush);
+    //pBrush->Release();
 
-    RectF rc = D2D1::RectF(200.0f, 200.0f, 200.0f + mTestBitmap->GetSize().width, 200.0f + mTestBitmap->GetSize().height);
-    mRenderTarget->DrawBitmap(mTestBitmap.Get(), rc);
+    mTestImage->Render(mRenderTarget, D2D1::Point2F(500.0f, 500.0f));
+
+    /* 스프라이트의 프레임 업데이트 지연용 코드 : 테스트용도임 */
+    static int delayFrameCount = 0;
+    constexpr int delayFrame = 10;
+    ++delayFrameCount;
+    if (delayFrameCount > delayFrame) {
+        mTestSprite->AdvanceFrame();
+        mTestSprite2->AdvanceFrame();
+        delayFrameCount = 0;
+    }
+    mTestSprite->Render(mRenderTarget, D2D1::Point2F(200.0f, 200.0f));
+    mTestSprite2->Render(mRenderTarget, D2D1::Point2F(500.0f, 200.0f));
 
     mRenderTarget->EndDraw();
 }

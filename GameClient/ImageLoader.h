@@ -2,15 +2,15 @@
 
 #include "Utils.h"
 
-namespace Image {
+namespace Img {
     inline ComPtr<ID2D1Bitmap> ImageLoad(const ComPtr<ID2D1Factory>& factory, const ComPtr<IWICImagingFactory>& wicFactory,
         const ComPtr<ID2D1HwndRenderTarget>& renderTarget, const std::wstring_view path)
     {
-        /* 32bppRGBA 형식으로 변환해줄 Converter 생성, 한번만 생성한다. */
-        static ComPtr<IWICFormatConverter> formatConverter;
-        if (nullptr == formatConverter) CheckHR(wicFactory->CreateFormatConverter(&formatConverter), std::source_location::current());
-
         HRESULT hr;
+
+        IWICFormatConverter* formatConverter;
+        hr = wicFactory->CreateFormatConverter(&formatConverter);
+        CheckHR(hr, std::source_location::current());
 
         IWICBitmapDecoder* decoder;
         hr = wicFactory->CreateDecoderFromFilename(path.data(), NULL, GENERIC_READ, WICDecodeMetadataCacheOnDemand, &decoder);
@@ -25,7 +25,7 @@ namespace Image {
 
         ComPtr<ID2D1Bitmap> bitmap;
         hr = renderTarget->CreateBitmapFromWicBitmap(
-            formatConverter.Get(),
+            formatConverter,
             NULL,
             bitmap.GetAddressOf()
         );
@@ -33,6 +33,7 @@ namespace Image {
 
         decoder->Release();
         frame->Release();
+        formatConverter->Release();
 
         return bitmap;
     }

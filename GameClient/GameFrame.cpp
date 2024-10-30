@@ -84,14 +84,19 @@ void GameFrame::Render() {
     /* 스프라이트의 프레임 업데이트 지연용 코드 : 테스트용도임 */
     static int delayFrameCount = 0;
     constexpr int delayFrame = 10;
+
+    /* 프레임 진행에 따라 회전하는 이미지를 위한 각 계산 코드 */
+    static float delayRoation = 0.0f;
+    delayRoation += 0.2f;
     ++delayFrameCount;
     if (delayFrameCount > delayFrame) {
         mTestSprite->AdvanceFrame();
         mTestSprite2->AdvanceFrame();
         delayFrameCount = 0;
     }
-    mTestSprite->Render(mRenderTarget, D2D1::Point2F(200.0f, 200.0f));
-    mTestSprite2->Render(mRenderTarget, D2D1::Point2F(500.0f, 200.0f));
+
+    mTestSprite->Render(mRenderTarget, D2D1::Point2F(200.0f, 200.0f), delayRoation);
+    mTestSprite2->Render(mRenderTarget, D2D1::Point2F(500.0f, 200.0f), delayRoation);
 
     mRenderTarget->EndDraw();
 }

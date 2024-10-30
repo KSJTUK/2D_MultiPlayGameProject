@@ -11,6 +11,7 @@ public:
 public:
     void AdvanceFrame();
     void Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarger, D2D1_POINT_2F position);
+    void Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarger, D2D1_POINT_2F position, float rotAngle);
 
 public:
     ComPtr<ID2D1Bitmap> mImage;

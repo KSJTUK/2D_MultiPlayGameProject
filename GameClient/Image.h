@@ -10,6 +10,7 @@ public:
 
 public:
     void Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POINT_2F position);
+    void Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POINT_2F position, float rotAngle);
 
 private:
     ComPtr<ID2D1Bitmap> mImage;

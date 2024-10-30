@@ -52,3 +52,9 @@ void Sprite::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POIN
 
     renderTarget->DrawBitmap(mImage.Get(), dest, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, source);
 }
+
+void Sprite::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POINT_2F position, float rotAngle) {
+    renderTarget->SetTransform(D2D1::Matrix3x2F::Rotation(rotAngle, position));
+    Render(renderTarget, position);
+    renderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+}

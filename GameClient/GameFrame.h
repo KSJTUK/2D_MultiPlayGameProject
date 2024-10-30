@@ -19,6 +19,7 @@ public:
 public:
     void Init();
     void InitDirect2D();
+    void InitWIC();
 
     void Render();
 
@@ -28,4 +29,7 @@ private:
 
     ComPtr<ID2D1Factory1> mD2Factory; /* Direct2D 자원 객체 생성을 위한 Factory */
     ComPtr<ID2D1HwndRenderTarget> mRenderTarget; /* Window  대상 렌더타겟 */
+
+    ComPtr<IWICImagingFactory> mWICFactory;
+    ComPtr<ID2D1Bitmap> mTestBitmap; /* 이미지 로딩 테스트용 */
 };

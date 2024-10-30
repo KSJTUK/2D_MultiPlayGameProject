@@ -3,6 +3,7 @@
 #include "Window.h" /* 메인 윈도우 생성 */
 
 #include "Utils.h" /* 에러 및 디버그 용 */
+#include "ImageLoader.h"
 
 //////////////////////////////////////////////////////////////////////////
 //																		//
@@ -34,6 +35,7 @@ SizeF GameFrame::GetCoordRate() const {
 
 void GameFrame::Init() {
     InitDirect2D();
+    InitWIC();
 }
 
 void GameFrame::InitDirect2D() {
@@ -52,6 +54,17 @@ void GameFrame::InitDirect2D() {
    CheckHR(hr, std::source_location::current());
 }
 
+void GameFrame::InitWIC() {
+    HRESULT hr;
+    hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+    CheckHR(hr, std::source_location::current());
+
+    hr = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(mWICFactory.GetAddressOf()));
+    CheckHR(hr, std::source_location::current());
+
+    mTestBitmap = Image::ImageLoad(mD2Factory, mWICFactory, mRenderTarget, L"Bridge_ALL.png");
+}
+
 void GameFrame::Render() {
     mRenderTarget->BeginDraw();
 
@@ -62,6 +75,9 @@ void GameFrame::Render() {
     D2D1_ELLIPSE ellipse{ D2D1::Point2F(100.0f, 100.0f), 100.0f, 100.0f };
     mRenderTarget->FillEllipse(ellipse, pBrush);
     pBrush->Release();
+
+    RectF rc = D2D1::RectF(200.0f, 200.0f, 200.0f + mTestBitmap->GetSize().width, 200.0f + mTestBitmap->GetSize().height);
+    mRenderTarget->DrawBitmap(mTestBitmap.Get(), rc);
 
     mRenderTarget->EndDraw();
 }

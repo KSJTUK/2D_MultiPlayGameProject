@@ -5,6 +5,7 @@
 #include "Utils.h" /* 에러 및 디버그 용 */
 #include "Image.h"
 #include "Sprite.h"
+#include "Camera.h"
 
 //////////////////////////////////////////////////////////////////////////
 //																		//
@@ -37,6 +38,7 @@ SizeF GameFrame::GetCoordRate() const {
 void GameFrame::Init() {
     InitDirect2D();
     InitWIC();
+    InitCamera();
 }
 
 void GameFrame::InitDirect2D() {
@@ -68,22 +70,27 @@ void GameFrame::InitWIC() {
     mTestSprite2 = std::make_unique<Sprite>(mD2Factory, mWICFactory, mRenderTarget, L"Explosions.png", D2D1::SizeU(9, 1));
 }
 
+void GameFrame::InitCamera() {
+    mTestCamera = std::make_unique<Camera>();
+    mTestCamera->SetViewRange(mRenderTarget);
+}
+
 void GameFrame::Render() {
     mRenderTarget->BeginDraw();
 
     mRenderTarget->Clear(Color(D2D1::ColorF::Gray));
 
-    //ID2D1SolidColorBrush* pBrush;
-    //mRenderTarget->CreateSolidColorBrush(Color(D2D1::ColorF::Red), &pBrush);
-    //D2D1_ELLIPSE ellipse{ D2D1::Point2F(100.0f, 100.0f), 100.0f, 100.0f };
-    //mRenderTarget->FillEllipse(ellipse, pBrush);
-    //pBrush->Release();
-
-    mTestImage->Render(mRenderTarget, D2D1::Point2F(500.0f, 500.0f));
-
+    static D2D1_POINT_2F p{ 1.0f, 1.0f };
+    static int delayPoint;
+    ++delayPoint;
+    if (delayPoint > 10) {
+        p.x += 1.0f;
+        p.y += 1.0f;
+        delayPoint = 0;
+    }
     /* 스프라이트의 프레임 업데이트 지연용 코드 : 테스트용도임 */
     static int delayFrameCount = 0;
-    constexpr int delayFrame = 10;
+    constexpr int delayFrame = 0;
 
     /* 프레임 진행에 따라 회전하는 이미지를 위한 각 계산 코드 */
     static float delayRoation = 0.0f;
@@ -95,8 +102,13 @@ void GameFrame::Render() {
         delayFrameCount = 0;
     }
 
+    mTestCamera->SetPosition(mTestCamera->GetPosition() + Position{ 0.3f, 0.3f });
+    mRenderTarget->SetTransform(mTestCamera->GetCameraTransform());
+
+    mTestImage->Render(mRenderTarget, D2D1::Point2F(500.0f, 500.0f));
     mTestSprite->Render(mRenderTarget, D2D1::Point2F(200.0f, 200.0f), delayRoation);
     mTestSprite2->Render(mRenderTarget, D2D1::Point2F(500.0f, 200.0f), delayRoation);
+
 
     mRenderTarget->EndDraw();
 }

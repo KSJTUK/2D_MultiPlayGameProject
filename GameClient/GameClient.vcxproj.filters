@@ -11,14 +11,14 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{c057c4ac-6307-4070-8a4b-43b24e485092}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Rendering">
-      <UniqueIdentifier>{294ec0b1-c2ab-40b8-bcb5-2f23ad2b7c41}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Frame">
       <UniqueIdentifier>{a34615fb-7efc-44f2-b151-ac408f751856}</UniqueIdentifier>
     </Filter>
     <Filter Include="Image">
       <UniqueIdentifier>{52321c18-0a1d-4d81-bef2-0fa6bda0f4ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{294ec0b1-c2ab-40b8-bcb5-2f23ad2b7c41}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -43,14 +43,17 @@
     <ClInclude Include="GameFrame.h">
       <Filter>Frame</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.h">
+    <ClInclude Include="Image.h">
       <Filter>Image</Filter>
     </ClInclude>
     <ClInclude Include="ImageLoader.h">
       <Filter>Image</Filter>
     </ClInclude>
-    <ClInclude Include="Image.h">
+    <ClInclude Include="Sprite.h">
       <Filter>Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Frame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -72,14 +75,17 @@
     <ClCompile Include="GameFrame.cpp">
       <Filter>Frame</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite.cpp">
+    <ClCompile Include="Image.cpp">
       <Filter>Image</Filter>
     </ClCompile>
     <ClCompile Include="ImageLoader.cpp">
       <Filter>Image</Filter>
     </ClCompile>
-    <ClCompile Include="Image.cpp">
+    <ClCompile Include="Sprite.cpp">
       <Filter>Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Frame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

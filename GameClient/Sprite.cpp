@@ -54,7 +54,11 @@ void Sprite::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POIN
 }
 
 void Sprite::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POINT_2F position, float rotAngle) {
-    renderTarget->SetTransform(D2D1::Matrix3x2F::Rotation(rotAngle, position));
+    Matrix3x2 oldTrans;
+    renderTarget->GetTransform(&oldTrans);
+    /* 출력 대상 지점의 중심을 기준으로 회전 */
+    renderTarget->SetTransform(D2D1::Matrix3x2F::Rotation(rotAngle, position) * oldTrans);
     Render(renderTarget, position);
-    renderTarget->SetTransform(D2D1::Matrix3x2F::Identity());
+    /* 출력 한 후에는 다시 원래의 변환행렬로 변경 */
+    renderTarget->SetTransform(oldTrans);
 }

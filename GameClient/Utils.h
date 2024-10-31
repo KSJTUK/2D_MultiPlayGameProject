@@ -21,3 +21,8 @@ inline D2D1::ColorF Color(const D2D1::ColorF::Enum& colorEnum, float alpha=1.0f)
 {
 	return D2D1::ColorF{ colorEnum, alpha };
 }
+
+inline D2D1_POINT_2F operator+(const D2D1_POINT_2F& p1, const D2D1_POINT_2F& p2)
+{
+	return D2D1_POINT_2F{ p1.x + p2.x, p1.y + p2.y };
+}

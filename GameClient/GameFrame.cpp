@@ -73,7 +73,7 @@ void GameFrame::InitWIC() {
 void GameFrame::InitCamera() {
     mCamera = std::make_unique<Camera>();
     auto size = SizeFToPosition(mRenderTarget->GetSize());
-    mCamera->SetPosition(size / 2.0f);
+    mCamera->SetPosition(size * 0.5f);
     mCamera->SetViewRange(mRenderTarget);
 }
 
@@ -88,7 +88,7 @@ void GameFrame::Render() {
 
     mRenderTarget->SetTransform(mCamera->GetCameraTransform());
 
-    mTextWriter->WriteText(mRenderTarget, D2D1::Point2F(100.0f, 100.0f), L"안녕하세요.");
+    mTextWriter->WriteText(mRenderTarget, D2D1::Point2F(100.0f, 100.0f), L"안녕하세요.", D2D1::ColorF::AliceBlue);
 
     mRenderTarget->EndDraw();
 }

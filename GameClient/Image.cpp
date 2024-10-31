@@ -23,10 +23,10 @@ void Image::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POINT
     );
 
     auto dest = D2D1::RectF(
-        position.x - cx / 2.0f,
-        position.y - cy / 2.0f,
-        position.x + cx / 2.0f,
-        position.y + cy / 2.0f
+        position.x - cx * 0.5f,
+        position.y - cy * 0.5f,
+        position.x + cx * 0.5f,
+        position.y + cy * 0.5f
     );
 
     renderTarget->DrawBitmap(mImage.Get(), dest, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, source);

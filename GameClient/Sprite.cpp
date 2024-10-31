@@ -45,10 +45,10 @@ void Sprite::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POIN
     );
 
     auto dest = D2D1::RectF(
-        position.x - mFrameSize.width / 2.0f,
-        position.y - mFrameSize.height / 2.0f,
-        position.x + mFrameSize.width / 2.0f,
-        position.y + mFrameSize.height / 2.0f);
+        position.x - mFrameSize.width * 0.5f,
+        position.y - mFrameSize.height * 0.5f,
+        position.x + mFrameSize.width * 0.5f,
+        position.y + mFrameSize.height * 0.5f);
 
     renderTarget->DrawBitmap(mImage.Get(), dest, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, source);
 }

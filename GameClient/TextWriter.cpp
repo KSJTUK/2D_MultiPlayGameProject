@@ -24,11 +24,21 @@ TextWriter::TextWriter() : mFontSize{ DefaultFontSize } {
 
 void TextWriter::WriteText(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, const Position& pos, std::wstring_view str) {
     size_t textBoxWidth = str.length() * mFontSize;
-    RectF textBox = D2D1::RectF(pos.x - textBoxWidth / 2.0f, pos.y - mFontSize / 2.0f, pos.x + textBoxWidth / 2.0f, pos.y + mFontSize / 2.0f);
+    RectF textBox = D2D1::RectF(pos.x - textBoxWidth * 0.5f, pos.y - mFontSize * 0.5f, pos.x + textBoxWidth * 0.5f, pos.y + mFontSize  * 0.5f);
 
     renderTarget->DrawTextW(str.data(), str.length(), mDefaultFormat.Get(), textBox, SolidBrush::blackBrush.Get());
 }
 
-void TextWriter::WriteText(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, const Position& pos, std::string_view str) {
-    WriteText(renderTarget, pos, to_wstring(str));
+void TextWriter::WriteText(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, const Position& pos, std::wstring_view str, D2D1::ColorF::Enum bkColor) {
+    size_t textBoxWidth = str.length() * mFontSize;
+    RectF textBox = D2D1::RectF(pos.x - textBoxWidth * 0.5f, pos.y - mFontSize, pos.x + textBoxWidth * 0.5f, pos.y + mFontSize * 0.5f);
+
+    ID2D1SolidColorBrush* brush;
+    renderTarget->CreateSolidColorBrush(Color(bkColor), &brush);
+
+    renderTarget->FillRectangle(textBox, brush);
+
+    renderTarget->DrawTextW(str.data(), str.length(), mDefaultFormat.Get(), textBox, SolidBrush::blackBrush.Get());
+
+    brush->Release();
 }

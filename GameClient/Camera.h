@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #define UNUSE_CAMERA_ROTATION
 
@@ -19,17 +19,8 @@ public:
 
     void SetViewRange(const ComPtr<ID2D1HwndRenderTarget>& renderTarget);
 
-#ifndef UNUSE_CAMERA_ROTATION
-    float GetRotationAngle() const;
-    void SetRotationAngle(float angle);
-#endif
-
 private:
-#ifndef UNUSE_CAMERA_ROTATION
-    /* Ä«¸Ş¶ó È¸Àü °¢µµ : 2DÀÌ¹Ç·Î roll È¸Àü¸¸ Á¸ÀçÇÑ´Ù. */
-    float mRotAngle;
-#endif
-    /* Ä«¸Ş¶ó À§Ä¡ */
+    /* ì¹´ë©”ë¼ ìœ„ì¹˜ */
     Position mPosition; /* center */
     Size mViewRange;    /* size */
 };

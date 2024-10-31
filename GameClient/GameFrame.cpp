@@ -6,6 +6,7 @@
 #include "Image.h"
 #include "Sprite.h"
 #include "Camera.h"
+#include "TextWriter.h"
 
 //////////////////////////////////////////////////////////////////////////
 //																		//
@@ -38,8 +39,8 @@ SizeF GameFrame::GetCoordRate() const {
 void GameFrame::Init() {
     InitDirect2D();
     InitWIC();
-    InitTextWriter();
     InitCamera();
+    InitText();
 }
 
 void GameFrame::InitDirect2D() {
@@ -56,6 +57,8 @@ void GameFrame::InitDirect2D() {
         mRenderTarget.GetAddressOf()
    );
    CheckHR(hr, std::source_location::current());
+
+   SolidBrush::Init(mRenderTarget);
 }
 
 void GameFrame::InitWIC() {
@@ -67,29 +70,15 @@ void GameFrame::InitWIC() {
     CheckHR(hr, std::source_location::current());
 }
 
-void GameFrame::InitTextWriter() {
-    HRESULT hr;
-    hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory3), reinterpret_cast<IUnknown**>(mWriteFactory.GetAddressOf()));
-    CheckHR(hr, std::source_location::current());
-
-    hr = mWriteFactory->CreateTextFormat(
-        L"Verdana",                     // 폰트 패밀리 이름의 문자열
-        NULL,                           // 폰트 컬렉션 객체, NULL=시스템 폰트 컬렉션
-        DWRITE_FONT_WEIGHT_NORMAL,      // 폰트 굵기. LIGHT, NORMAL, BOLD 등.
-        DWRITE_FONT_STYLE_NORMAL,       // 폰트 스타일. NORMAL, OBLIQUE, ITALIC.
-        DWRITE_FONT_STRETCH_NORMAL,     // 폰트 간격. CONDENSED, NORMAL, MEDIUM, EXTEXDED 등.
-        13,                             // 폰트 크기.
-        L"ko-kr",                       // 로케일을 문자열로 명시.  영어-미국=L"en-us", 한국어-한국=L"ko-kr"
-        reinterpret_cast<IDWriteTextFormat**>(mTextFormat.GetAddressOf())
-    );
-
-    CheckHR(hr, std::source_location::current());
-    mTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+void GameFrame::InitCamera() {
+    mCamera = std::make_unique<Camera>();
+    auto size = SizeFToPosition(mRenderTarget->GetSize());
+    mCamera->SetPosition(size / 2.0f);
+    mCamera->SetViewRange(mRenderTarget);
 }
 
-void GameFrame::InitCamera() {
-    mTestCamera = std::make_unique<Camera>();
-    mTestCamera->SetViewRange(mRenderTarget);
+void GameFrame::InitText() {
+    mTextWriter = std::make_unique<TextWriter>();
 }
 
 void GameFrame::Render() {
@@ -97,13 +86,9 @@ void GameFrame::Render() {
 
     mRenderTarget->Clear(Color(D2D1::ColorF::Gray));
 
-    static ID2D1SolidColorBrush* brush;
-    if (nullptr == brush)
-        mRenderTarget->CreateSolidColorBrush(Color(D2D1::ColorF::Black), &brush);
+    mRenderTarget->SetTransform(mCamera->GetCameraTransform());
 
-    auto [cx, cy] = mRenderTarget->GetSize();
-    std::wstring text{ L"안녕하세요." };
-    mRenderTarget->DrawTextW(text.c_str(), text.size(), mTextFormat.Get(), D2D1::RectF(0.0f, 0.0f, cx, cy), brush);
+    mTextWriter->WriteText(mRenderTarget, D2D1::Point2F(100.0f, 100.0f), L"안녕하세요.");
 
     mRenderTarget->EndDraw();
 }

@@ -1,8 +1,8 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "GameFrame.h"
-#include "Window.h" /* ¸ŞÀÎ À©µµ¿ì »ı¼º */
+#include "Window.h" /* ë©”ì¸ ìœˆë„ìš° ìƒì„± */
 
-#include "Utils.h" /* ¿¡·¯ ¹× µğ¹ö±× ¿ë */
+#include "Utils.h" /* ì—ëŸ¬ ë° ë””ë²„ê·¸ ìš© */
 #include "Image.h"
 #include "Sprite.h"
 #include "Camera.h"
@@ -38,13 +38,14 @@ SizeF GameFrame::GetCoordRate() const {
 void GameFrame::Init() {
     InitDirect2D();
     InitWIC();
+    InitTextWriter();
     InitCamera();
 }
 
 void GameFrame::InitDirect2D() {
     HRESULT hr;
 
-    /* ¸ÖÆ¼ ¾²·¹µå È¯°æ¿¡¼­ µ¿ÀÛÇÒ Factory °´Ã¼¸¦ ¸¸µå·Á¸é D2D1_FACTORY_TYPE_MULTI_THREADED °ªÀ» ³Ö¾îÁØ´Ù. */
+    /* ë©€í‹° ì“°ë ˆë“œ í™˜ê²½ì—ì„œ ë™ì‘í•  Factory ê°ì²´ë¥¼ ë§Œë“œë ¤ë©´ D2D1_FACTORY_TYPE_MULTI_THREADED ê°’ì„ ë„£ì–´ì¤€ë‹¤. */
     hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, mD2Factory.GetAddressOf());
     CheckHR(hr, std::source_location::current());
 
@@ -64,10 +65,26 @@ void GameFrame::InitWIC() {
 
     hr = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(mWICFactory.GetAddressOf()));
     CheckHR(hr, std::source_location::current());
+}
 
-    mTestImage = std::make_unique<Image>(mD2Factory, mWICFactory, mRenderTarget, L"Bridge_ALL.png");
-    mTestSprite = std::make_unique<Sprite>(mD2Factory, mWICFactory, mRenderTarget, L"Rocks_04.png", D2D1::SizeU(8, 1));
-    mTestSprite2 = std::make_unique<Sprite>(mD2Factory, mWICFactory, mRenderTarget, L"Explosions.png", D2D1::SizeU(9, 1));
+void GameFrame::InitTextWriter() {
+    HRESULT hr;
+    hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory3), reinterpret_cast<IUnknown**>(mWriteFactory.GetAddressOf()));
+    CheckHR(hr, std::source_location::current());
+
+    hr = mWriteFactory->CreateTextFormat(
+        L"Verdana",                     //Â í°íŠ¸Â íŒ¨ë°€ë¦¬Â ì´ë¦„ì˜Â ë¬¸ìì—´
+        NULL,                           //Â í°íŠ¸Â ì»¬ë ‰ì…˜Â ê°ì²´,Â NULL=ì‹œìŠ¤í…œÂ í°íŠ¸Â ì»¬ë ‰ì…˜
+        DWRITE_FONT_WEIGHT_NORMAL,      //Â í°íŠ¸Â êµµê¸°.Â LIGHT,Â NORMAL,Â BOLDÂ ë“±.
+        DWRITE_FONT_STYLE_NORMAL,       //Â í°íŠ¸Â ìŠ¤íƒ€ì¼.Â NORMAL,Â OBLIQUE,Â ITALIC.
+        DWRITE_FONT_STRETCH_NORMAL,     //Â í°íŠ¸Â ê°„ê²©.Â CONDENSED,Â NORMAL,Â MEDIUM,Â EXTEXDEDÂ ë“±.
+        13,                             //Â í°íŠ¸Â í¬ê¸°.
+        L"ko-kr",                       //Â ë¡œì¼€ì¼ì„Â ë¬¸ìì—´ë¡œÂ ëª…ì‹œ.Â Â ì˜ì–´-ë¯¸êµ­=L"en-us",Â í•œêµ­ì–´-í•œêµ­=L"ko-kr"
+        reinterpret_cast<IDWriteTextFormat**>(mTextFormat.GetAddressOf())
+    );
+
+    CheckHR(hr, std::source_location::current());
+    mTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
 }
 
 void GameFrame::InitCamera() {
@@ -80,35 +97,13 @@ void GameFrame::Render() {
 
     mRenderTarget->Clear(Color(D2D1::ColorF::Gray));
 
-    static D2D1_POINT_2F p{ 1.0f, 1.0f };
-    static int delayPoint;
-    ++delayPoint;
-    if (delayPoint > 10) {
-        p.x += 1.0f;
-        p.y += 1.0f;
-        delayPoint = 0;
-    }
-    /* ½ºÇÁ¶óÀÌÆ®ÀÇ ÇÁ·¹ÀÓ ¾÷µ¥ÀÌÆ® Áö¿¬¿ë ÄÚµå : Å×½ºÆ®¿ëµµÀÓ */
-    static int delayFrameCount = 0;
-    constexpr int delayFrame = 0;
+    static ID2D1SolidColorBrush* brush;
+    if (nullptr == brush)
+        mRenderTarget->CreateSolidColorBrush(Color(D2D1::ColorF::Black), &brush);
 
-    /* ÇÁ·¹ÀÓ ÁøÇà¿¡ µû¶ó È¸ÀüÇÏ´Â ÀÌ¹ÌÁö¸¦ À§ÇÑ °¢ °è»ê ÄÚµå */
-    static float delayRoation = 0.0f;
-    delayRoation += 0.2f;
-    ++delayFrameCount;
-    if (delayFrameCount > delayFrame) {
-        mTestSprite->AdvanceFrame();
-        mTestSprite2->AdvanceFrame();
-        delayFrameCount = 0;
-    }
-
-    mTestCamera->SetPosition(mTestCamera->GetPosition() + Position{ 0.3f, 0.3f });
-    mRenderTarget->SetTransform(mTestCamera->GetCameraTransform());
-
-    mTestImage->Render(mRenderTarget, D2D1::Point2F(500.0f, 500.0f));
-    mTestSprite->Render(mRenderTarget, D2D1::Point2F(200.0f, 200.0f), delayRoation);
-    mTestSprite2->Render(mRenderTarget, D2D1::Point2F(500.0f, 200.0f), delayRoation);
-
+    auto [cx, cy] = mRenderTarget->GetSize();
+    std::wstring text{ L"ì•ˆë…•í•˜ì„¸ìš”." };
+    mRenderTarget->DrawTextW(text.c_str(), text.size(), mTextFormat.Get(), D2D1::RectF(0.0f, 0.0f, cx, cy), brush);
 
     mRenderTarget->EndDraw();
 }

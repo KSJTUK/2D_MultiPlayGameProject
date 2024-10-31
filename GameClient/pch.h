@@ -12,11 +12,13 @@
 #include <wincodec.h>               /* WIC 사용을 위한 헤더 */
 #include <d2d1effects.h>            /* 이미지 효과와 관련된 것들 정의 */
 #include <d2d1effecthelpers.h>      /* 이미지 효과 관련 C++ 헬퍼 */
+#include <dwrite_3.h>               /* 텍스트 출력을 위한 헤더 */
 
 /* Com 객체 */
 #include <comdef.h>
 #include <wrl/client.h>
 
+#pragma comment(lib, "DWrite.lib")
 #pragma comment(lib, "D2D1.lib")
 
 /* debug 용도 */

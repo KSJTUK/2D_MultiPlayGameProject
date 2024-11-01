@@ -26,11 +26,18 @@
 #include <source_location>
 
 /* C++ วฅมุ */
+#include <functional>
+#include <array>
+#include <queue>
+#include <set>
 
 /* string */
 #include <string>
 #include <string_view>
 #include <format>
+
+#include <numeric>
+#include <algorithm>
 
 /* file */
 #include <filesystem>

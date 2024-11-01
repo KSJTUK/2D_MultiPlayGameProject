@@ -88,7 +88,5 @@ void GameFrame::Render() {
 
     mRenderTarget->SetTransform(mCamera->GetCameraTransform());
 
-    mTextWriter->WriteText(mRenderTarget, D2D1::Point2F(100.0f, 100.0f), L"안녕하세요.", D2D1::ColorF::AliceBlue);
-
     mRenderTarget->EndDraw();
 }

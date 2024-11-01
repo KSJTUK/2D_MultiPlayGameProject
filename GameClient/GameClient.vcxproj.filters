@@ -58,6 +58,7 @@
     <ClInclude Include="TextWriter.h">
       <Filter>Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -93,6 +94,7 @@
     <ClCompile Include="TextWriter.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameClient.rc">

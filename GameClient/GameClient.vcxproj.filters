@@ -59,6 +59,7 @@
       <Filter>Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="InputBox.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -95,6 +96,7 @@
       <Filter>Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="InputBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameClient.rc">

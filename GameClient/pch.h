@@ -47,3 +47,5 @@
 
 /* ±‚≈∏ */
 #include "types.h"
+
+using WINPROC = LRESULT(*)(HWND, UINT, WPARAM, LPARAM);

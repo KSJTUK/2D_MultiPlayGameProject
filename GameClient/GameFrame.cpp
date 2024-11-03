@@ -8,6 +8,8 @@
 #include "Camera.h"
 #include "TextWriter.h"
 
+#include "InputBox.h"
+
 //////////////////////////////////////////////////////////////////////////
 //																		//
 //																		//
@@ -41,6 +43,8 @@ void GameFrame::Init() {
     InitWIC();
     InitCamera();
     InitText();
+
+    InputBox a{ mInstance, mMainWindow->GetHandle()};
 }
 
 void GameFrame::InitDirect2D() {

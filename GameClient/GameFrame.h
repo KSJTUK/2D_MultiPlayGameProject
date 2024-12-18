@@ -26,10 +26,16 @@ public:
     void InitDirect2D();
     void InitWIC();
     void InitCamera();
+    void InitImgui();
+
 
     void InitText();
 
     void RenderDebugInfo();
+
+    void Update();
+    void ImguiRenderStart();
+    void ImguiUpdateFrame();
     void Render();
 
 private:  
@@ -42,8 +48,13 @@ private:
 
     std::unique_ptr<class TextWriter> mTextWriter;      /* 텍스트 로딩용 클래스*/
     std::unique_ptr<class Camera> mCamera;              /* 카메라 */
+    std::unique_ptr<class Timer> mTimer;                /* 타이머 */
 
     std::unique_ptr<DebugInfo> mDebugInfo;
 
     std::unique_ptr<class Sprite> mSprite;
+
+    bool mShowDemoWindow{ true };
+    bool mShowAnotherWindow{ false };
+    ImVec4 mImguiClearColor{ 0.45f, 0.55f, 0.60f, 1.00f };
 };

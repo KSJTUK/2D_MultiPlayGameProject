@@ -1,15 +1,15 @@
 #include "pch.h"
 #include "Timer.h"
 
-GTime::GTime()
+Timer::Timer()
 {
 }
 
-GTime::~GTime()
+Timer::~Timer()
 {
 }
 
-double GTime::SetTimeScale(double scale)
+double Timer::SetTimeScale(double scale)
 {
 	auto temp = mTimeScale;
 	mTimeScale = scale;
@@ -17,50 +17,50 @@ double GTime::SetTimeScale(double scale)
 }
 
 
-double GTime::GetTimeScale()
+double Timer::GetTimeScale()
 {
 	return mTimeScale;
 }
 
-uint64_t GTime::GetFrameCount()
+uint64_t Timer::GetFrameCount()
 {
 	return mFrameCount;
 }
 
 
 // 각 프레임이 시작될 때마다 호출함 
-void GTime::AdvanceTime() {
-	GTime::UpdateDeltaTime();
-	GTime::SampleDeltaTime();
-	GTime::AddScaledStarted();
-	GTime::CheckEvent();
+void Timer::AdvanceTime() {
+	Timer::UpdateDeltaTime();
+	Timer::SampleDeltaTime();
+	Timer::AddScaledStarted();
+	Timer::CheckEvent();
 }
 
 // Scene 이 시작될 때 호출 
-void GTime::StartSceneTime()
+void Timer::StartSceneTime()
 {
 	mSceneStarted = clock::now();
 }
 
-void GTime::UpdateDeltaTime()
+void Timer::UpdateDeltaTime()
 {
 	auto now = clock::now();
 	mDeltaTime = std::chrono::duration_cast<duration>(now - mPrev);
 	mPrev = now;
 	mFrameCount++;
 }
-void GTime::AddScaledStarted()
+void Timer::AddScaledStarted()
 {
 	mScaledStarted += mDeltaTime * mTimeScale;
 }
 
-void GTime::SampleDeltaTime()
+void Timer::SampleDeltaTime()
 {
 	mDeltaTimeBuffer[mDeltaTimeSampleingIndex] = mDeltaTime * mTimeScale;
 	mDeltaTimeSampleingIndex = (mDeltaTimeSampleingIndex + 1) % mDeltaTimeBufferSize;
 }
 
-bool GTime::PopEvent()
+bool Timer::PopEvent()
 {
 	auto ev = mEvents.top();
 	mEvents.pop();
@@ -74,12 +74,10 @@ bool GTime::PopEvent()
 	return false;
 }
 
-void GTime::CheckEvent()
+void Timer::CheckEvent()
 {
 	if (mEvents.empty()) {
 		return;
 	}
-	while (GTime::PopEvent());
+	while (Timer::PopEvent());
 }
-
-GTime Time{};

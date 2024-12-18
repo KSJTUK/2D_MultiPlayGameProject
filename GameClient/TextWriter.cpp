@@ -2,7 +2,7 @@
 #include "TextWriter.h"
 #include "Utils.h"
 
-TextWriter::TextWriter() : mFontSize{ DefaultFontSize } {
+TextWriter::TextWriter() : mFontSize{ DefaultFontSize } {   
     HRESULT hr{ };
     hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory3), reinterpret_cast<IUnknown**>(mWriteFactory.GetAddressOf()));
     CheckHR(hr, std::source_location::current());
@@ -37,4 +37,8 @@ void TextWriter::WriteText(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, co
 
     auto complementaryColor = ComplementaryColorRGB(bkColor);
     renderTarget->DrawTextW(str.data(), static_cast<long>(str.length()), mDefaultFormat.Get(), textBox, SolidBrush::GetBrush(complementaryColor));
+}
+
+ComPtr<IDWriteFactory3> TextWriter::GetWriteFactory() {
+    return mWriteFactory;
 }

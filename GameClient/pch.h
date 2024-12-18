@@ -45,6 +45,11 @@
 /* memory */
 #include <memory>
 
+/* imgui */
+#include "External/imgui/imgui.h"
+#include "External/imgui/imgui_impl_d2d.h"
+#include "External/imgui/imgui_impl_win32.h"
+
 /* ±‚≈∏ */
 #include "types.h"
 

@@ -7,6 +7,7 @@
 #include "Sprite.h"
 #include "Camera.h"
 #include "TextWriter.h"
+#include "Timer.h"
 
 //////////////////////////////////////////////////////////////////////////
 //																		//
@@ -24,6 +25,9 @@ GameFrame::GameFrame(HINSTANCE instance) :
 }
 
 GameFrame::~GameFrame() {
+    ImGui_ImplD2D_Shutdown();
+    ImGui_ImplWin32_Shutdown();
+    ImGui::DestroyContext();
 }
 
 SizeF GameFrame::GetCoordRate() const {
@@ -41,6 +45,7 @@ void GameFrame::Init() {
     InitWIC();
     InitCamera();
     InitText();
+    InitImgui();
 }
 
 void GameFrame::InitDirect2D() {
@@ -77,6 +82,31 @@ void GameFrame::InitCamera() {
     mCamera->SetViewRange(mRenderTarget);
 }
 
+void GameFrame::InitImgui() {
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::GetStyle().ScaleAllSizes(1);
+    io.FontGlobalScale = 1;
+
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    ImGui::GetStyle().AntiAliasedFill = false;
+    ImGui::GetStyle().AntiAliasedLines = false;
+    ImGui::GetStyle().AntiAliasedLinesUseTex = false;
+
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+    // required styles
+    ImGui::GetStyle().AntiAliasedLines = false;
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplWin32_Init(mMainWindow->GetHandle());
+    ImGui_ImplD2D_Init(mRenderTarget.Get(), mTextWriter->GetWriteFactory().Get());
+}
+
 void GameFrame::InitText() {
     mTextWriter = std::make_unique<TextWriter>();
     mDebugInfo = std::make_unique<DebugInfo>();
@@ -98,13 +128,42 @@ void GameFrame::RenderDebugInfo() {
     mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t += 20) }, to_wstring("HelloWorld"), D2D1::ColorF::Violet);
 }
 
-void GameFrame::Render() {
-    mRenderTarget->BeginDraw();
+void GameFrame::Update() {
+    
+}
 
-    mRenderTarget->Clear(Color(D2D1::ColorF::White));
+void GameFrame::ImguiRenderStart() {
+    // Start the Dear ImGui frame
+    ImGui_ImplD2D_NewFrame();
+    ImGui_ImplWin32_NewFrame();
+    ImGui::NewFrame();
+}
+
+void GameFrame::ImguiUpdateFrame() {
+    ImGui::Begin("Hello Imgui");   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+    ImGui::Text("Hello from another window!");
+    ImGui::End();
+}
+
+void GameFrame::Render() {
+    ImguiRenderStart();
+
+    ImguiUpdateFrame();
+
+    ImGui::EndFrame();
+
+    mRenderTarget->BeginDraw();
+    mRenderTarget->Clear(Color(D2D1::ColorF::Gray));
     mRenderTarget->SetTransform(mCamera->GetCameraTransform());
 
+    // Render
     RenderDebugInfo();
+
+    mRenderTarget->SetTransform(Matrix3x2::Identity());
+
+    ImGui::Render();
+
+    ImGui_ImplD2D_RenderDrawData(ImGui::GetDrawData());
 
     mRenderTarget->EndDraw();
 }

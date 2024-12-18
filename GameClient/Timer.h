@@ -5,7 +5,7 @@
 template<typename T>
 concept TimeUnit = std::chrono::_Is_duration_v<T>;
 
-class GTime {
+class Timer {
 	using clock = std::chrono::high_resolution_clock;
 	using rep = double;
 	using period = std::nano;
@@ -40,8 +40,8 @@ public:
 		result_time_unscaled,
 	};
 public:
-	GTime();
-	~GTime();
+	Timer();
+	~Timer();
 
 	template<typename ResultTy = double, TimeUnit Tu = std::chrono::seconds>
 	[[nodiscard]]

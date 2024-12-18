@@ -26,6 +26,8 @@ public:
     HWND GetHandle() const;
     Size GetSize() const;
     RECT GetRect() const;
+    RECT GetScreenRect() const;
+    RECT GetScreenRect(int offsetW, int offsetH) const;
 
 private:
     HWND mHandle;

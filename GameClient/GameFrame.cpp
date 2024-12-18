@@ -8,8 +8,6 @@
 #include "Camera.h"
 #include "TextWriter.h"
 
-#include "InputBox.h"
-
 //////////////////////////////////////////////////////////////////////////
 //																		//
 //																		//
@@ -43,8 +41,6 @@ void GameFrame::Init() {
     InitWIC();
     InitCamera();
     InitText();
-
-    InputBox a{ mInstance, mMainWindow->GetHandle()};
 }
 
 void GameFrame::InitDirect2D() {
@@ -83,14 +79,32 @@ void GameFrame::InitCamera() {
 
 void GameFrame::InitText() {
     mTextWriter = std::make_unique<TextWriter>();
+    mDebugInfo = std::make_unique<DebugInfo>();
+}
+
+void GameFrame::RenderDebugInfo() {
+    auto [l, t, r, b] = mMainWindow->GetScreenRect();
+    l += 100;
+    t += 20;
+    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t) }, to_wstring("HelloWorld"));
+    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t += 20) }, to_wstring("HelloWorld"), D2D1::ColorF::Black);
+    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t += 20) }, to_wstring("HelloWorld"), D2D1::ColorF::Cyan);
+    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t += 20) }, to_wstring("HelloWorld"), D2D1::ColorF::AntiqueWhite);
+    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t += 20) }, to_wstring("HelloWorld"), D2D1::ColorF::BlanchedAlmond);
+    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t += 20) }, to_wstring("HelloWorld"), D2D1::ColorF::DeepPink);
+    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t += 20) }, to_wstring("HelloWorld"), D2D1::ColorF::DarkRed);
+    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t += 20) }, to_wstring("HelloWorld"), D2D1::ColorF::DeepSkyBlue);
+    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t += 20) }, to_wstring("HelloWorld"), D2D1::ColorF::BlueViolet);
+    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t += 20) }, to_wstring("HelloWorld"), D2D1::ColorF::Violet);
 }
 
 void GameFrame::Render() {
     mRenderTarget->BeginDraw();
 
-    mRenderTarget->Clear(Color(D2D1::ColorF::Gray));
-
+    mRenderTarget->Clear(Color(D2D1::ColorF::White));
     mRenderTarget->SetTransform(mCamera->GetCameraTransform());
+
+    RenderDebugInfo();
 
     mRenderTarget->EndDraw();
 }

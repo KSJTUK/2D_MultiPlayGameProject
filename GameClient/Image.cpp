@@ -17,17 +17,12 @@ Image::Image(ComPtr<ID2D1Bitmap> image) {
 }
 
 void Image::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POINT_2F position) {
-    auto [cx, cy] = mImage->GetSize();
+    SizeF size = mImage->GetSize();
     auto source = D2D1::RectF(
-        0.0f, 0.0f, cx, cy
+        0.0f, 0.0f, size.width, size.height
     );
 
-    auto dest = D2D1::RectF(
-        position.x - cx * 0.5f,
-        position.y - cy * 0.5f,
-        position.x + cx * 0.5f,
-        position.y + cy * 0.5f
-    );
+    auto dest = CreateRectF(position, size);
 
     renderTarget->DrawBitmap(mImage.Get(), dest, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, source);
 }

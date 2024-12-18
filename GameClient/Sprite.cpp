@@ -36,7 +36,6 @@ void Sprite::AdvanceFrame() {
 void Sprite::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POINT_2F position) {
     long frameX = mFrameCount % mMaxFrameCount.width;
     long frameY = mFrameCount / mMaxFrameCount.width;
-
     auto source = D2D1::RectF(
         static_cast<float>(frameX * mFrameSize.width),
         static_cast<float>(frameY * mFrameSize.height),
@@ -44,11 +43,7 @@ void Sprite::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POIN
         static_cast<float>((frameY + 1) * mFrameSize.height)
     );
 
-    auto dest = D2D1::RectF(
-        position.x - mFrameSize.width * 0.5f,
-        position.y - mFrameSize.height * 0.5f,
-        position.x + mFrameSize.width * 0.5f,
-        position.y + mFrameSize.height * 0.5f);
+    auto dest = CreateRectF(position, mFrameSize);
 
     renderTarget->DrawBitmap(mImage.Get(), dest, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, source);
 }

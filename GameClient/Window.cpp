@@ -90,3 +90,30 @@ RECT Window::GetRect() const {
     GetClientRect(mHandle, &rc);
     return rc;
 }
+
+RECT Window::GetScreenRect() const {
+    RECT rc = GetRect();
+
+    long halfW = (rc.right - rc.left) / 2;
+    long halfH = (rc.bottom - rc.top) / 2;
+
+    rc.left -= halfW;
+    rc.right -= halfW;
+    rc.top -= halfH;
+    rc.bottom -= halfH;
+    return rc;
+}
+
+RECT Window::GetScreenRect(int offsetW, int offsetH) const
+{
+    RECT rc = GetRect();
+
+    long halfW = (rc.right - rc.left) / 2;
+    long halfH = (rc.bottom - rc.top) / 2;
+
+    rc.left -= halfW + offsetW;
+    rc.right -= halfW + offsetW;
+    rc.top -= halfH + offsetH;
+    rc.bottom -= halfH + offsetH;
+    return rc;
+}

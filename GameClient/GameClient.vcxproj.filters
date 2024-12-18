@@ -58,8 +58,10 @@
     <ClInclude Include="TextWriter.h">
       <Filter>Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="InputBox.h" />
+    <ClInclude Include="ConsoleWindow.h" />
+    <ClInclude Include="Timer.h">
+      <Filter>Frame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -95,8 +97,10 @@
     <ClCompile Include="TextWriter.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="InputBox.cpp" />
+    <ClCompile Include="ConsoleWindow.cpp" />
+    <ClCompile Include="Timer.cpp">
+      <Filter>Frame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameClient.rc">

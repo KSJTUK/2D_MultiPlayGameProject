@@ -45,7 +45,7 @@ void GuiWindow::SetBgAlpha(const float alpha) {
     mBgAlpha = alpha;
 }
 
-void GuiWindow::UpdateContents() { }
+void GuiWindow::UpdateContents() {  }
 
 void GuiWindow::Render() {
     ImGui::SetNextWindowBgAlpha(mBgAlpha);

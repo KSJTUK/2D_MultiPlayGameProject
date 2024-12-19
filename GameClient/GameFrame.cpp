@@ -177,6 +177,7 @@ void GameFrame::PrepareRender() {
 void GameFrame::Render() {
     PrepareRender();
     // Render
+    mSprite->SetOpacity(0.1f);
     mSprite->Render(mRenderTarget, Position{ 100, 200 });
 
     mGuiWindow->Render();

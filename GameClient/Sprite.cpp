@@ -42,6 +42,10 @@ void Sprite::SetDuration(float duration) {
     mFramePerSecond = mDuration / mFrameEnd;
 }
 
+void Sprite::SetOpacity(float opacity) {
+    mOpacity = opacity;
+}
+
 void Sprite::Update(float deltaTime) {
     mCounter += deltaTime;
     if (mCounter >= mFramePerSecond) {

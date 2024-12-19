@@ -29,7 +29,6 @@ public:
 
     void Update();
     void ImguiRenderStart();
-    void ImguiUpdateFrame();
 
     void PrepareRender();
     void Render();
@@ -48,6 +47,8 @@ private:
     std::unique_ptr<class Timer> mTimer;                /* ≈∏¿Ã∏” */
 
     std::unique_ptr<class Sprite> mSprite;
+
+    std::unique_ptr<class GuiWindow> mGuiWindow;
 
     bool mShowDemoWindow{ true };
     bool mShowAnotherWindow{ false };

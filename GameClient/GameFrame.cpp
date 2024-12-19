@@ -9,6 +9,8 @@
 #include "TextWriter.h"
 #include "Timer.h"
 
+#include "GuiWindow.h"
+
 //////////////////////////////////////////////////////////////////////////
 //																		//
 //																		//
@@ -112,10 +114,11 @@ void GameFrame::InitImgui() {
 
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+    //window_flags |= ImGuiWindowFlags_NoMove
     ImGui::GetStyle().AntiAliasedFill = false;
     ImGui::GetStyle().AntiAliasedLines = false;
     ImGui::GetStyle().AntiAliasedLinesUseTex = false;
-
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
@@ -125,6 +128,13 @@ void GameFrame::InitImgui() {
     // Setup Platform/Renderer backends
     ImGui_ImplWin32_Init(mMainWindow->GetHandle());
     ImGui_ImplD2D_Init(mRenderTarget.Get(), mTextWriter->GetWriteFactory().Get());
+
+    mGuiWindow = std::make_unique<GuiWindow>();
+
+    mGuiWindow->EnableWindowFlag(ImGuiWindowFlags_NoMove | ImGuiWindowFlags_UnsavedDocument | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoNav);
+    mGuiWindow->SetWindowSize(ImVec2{ 500, 400 });
+    mGuiWindow->SetBgAlpha(0.5f);
 }
 
 void GameFrame::InitText() {
@@ -157,12 +167,6 @@ void GameFrame::ImguiRenderStart() {
     ImGui::NewFrame();
 }
 
-void GameFrame::ImguiUpdateFrame() {
-    ImGui::Begin("Hello Imgui");   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-    ImGui::Text("Hello from another window!");
-    ImGui::End();
-}
-
 void GameFrame::PrepareRender() {
     ImguiRenderStart();
     mRenderTarget->BeginDraw();
@@ -172,19 +176,20 @@ void GameFrame::PrepareRender() {
 
 void GameFrame::Render() {
     PrepareRender();
-
-    // Imgui Render
-    ImguiUpdateFrame();
     // Render
     mSprite->Render(mRenderTarget, Position{ 100, 200 });
+
+    mGuiWindow->Render();
 
     RenderEnd();
 }
 
 void GameFrame::RenderEnd() {
     mRenderTarget->SetTransform(Matrix3x2::Identity());
+
     ImGui::EndFrame();
     ImGui::Render();
     ImGui_ImplD2D_RenderDrawData(ImGui::GetDrawData());
+
     mRenderTarget->EndDraw();
 }

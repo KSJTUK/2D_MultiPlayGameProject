@@ -57,6 +57,7 @@ void GameFrame::Init() {
     InitCamera();
     InitText();
     InitImgui();
+    InitObjects();
 }
 
 void GameFrame::InitDirect2D() {
@@ -135,7 +136,12 @@ void GameFrame::InitImgui() {
 
 void GameFrame::InitText() {
     mTextWriter = std::make_unique<TextWriter>();
-    mDebugInfo = std::make_unique<DebugInfo>();
+}
+
+void GameFrame::InitObjects() {
+    mTimer = std::make_unique<Timer>();
+    mSprite = std::make_unique<Sprite>(mD2Factory, mWICFactory, mRenderTarget, L"Asset/Explosions.png", D2D1::SizeU(9, 1));
+    mSprite->SetDuration(1.0f);
 }
 
 void GameFrame::ResetSize() {
@@ -145,24 +151,10 @@ void GameFrame::ResetSize() {
     mRenderTarget->Resize(resizedSize);
 }
 
-void GameFrame::RenderDebugInfo() {
-    auto [l, t, r, b] = mMainWindow->GetScreenRect();
-    l += 100;
-    t += 20;
-    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t) }, to_wstring("HelloWorld"));
-    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t += 20) }, to_wstring("HelloWorld"), D2D1::ColorF::Black);
-    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t += 20) }, to_wstring("HelloWorld"), D2D1::ColorF::Cyan);
-    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t += 20) }, to_wstring("HelloWorld"), D2D1::ColorF::AntiqueWhite);
-    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t += 20) }, to_wstring("HelloWorld"), D2D1::ColorF::BlanchedAlmond);
-    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t += 20) }, to_wstring("HelloWorld"), D2D1::ColorF::DeepPink);
-    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t += 20) }, to_wstring("HelloWorld"), D2D1::ColorF::DarkRed);
-    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t += 20) }, to_wstring("HelloWorld"), D2D1::ColorF::DeepSkyBlue);
-    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t += 20) }, to_wstring("HelloWorld"), D2D1::ColorF::BlueViolet);
-    mTextWriter->WriteText(mRenderTarget, Position{ static_cast<float>(l), static_cast<float>(t += 20) }, to_wstring("HelloWorld"), D2D1::ColorF::Violet);
-}
-
 void GameFrame::Update() {
-    
+    mTimer->AdvanceTime();
+    const float deltaTime = mTimer->GetDeltaTime<float>();
+    mSprite->Update(deltaTime);
 }
 
 void GameFrame::ImguiRenderStart() {
@@ -178,25 +170,28 @@ void GameFrame::ImguiUpdateFrame() {
     ImGui::End();
 }
 
-void GameFrame::Render() {
+void GameFrame::PrepareRender() {
     ImguiRenderStart();
-
-    ImguiUpdateFrame();
-
-    ImGui::EndFrame();
-
     mRenderTarget->BeginDraw();
     mRenderTarget->Clear(Color(D2D1::ColorF::Gray));
     mRenderTarget->SetTransform(mCamera->GetCameraTransform());
+}
 
+void GameFrame::Render() {
+    PrepareRender();
+
+    // Imgui Render
+    ImguiUpdateFrame();
     // Render
-    RenderDebugInfo();
+    mSprite->Render(mRenderTarget, Position{ 100, 200 });
 
+    RenderEnd();
+}
+
+void GameFrame::RenderEnd() {
     mRenderTarget->SetTransform(Matrix3x2::Identity());
-
+    ImGui::EndFrame();
     ImGui::Render();
-
     ImGui_ImplD2D_RenderDrawData(ImGui::GetDrawData());
-
     mRenderTarget->EndDraw();
 }

@@ -101,7 +101,6 @@ public:
 	static void Destroy()
 	{
 		brushMap.clear();
-		SolidBrush::renderTarget->AddRef();
 		SolidBrush::renderTarget.Reset();
 	}
 

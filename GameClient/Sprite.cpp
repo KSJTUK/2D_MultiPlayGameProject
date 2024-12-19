@@ -3,32 +3,57 @@
 #include "ImageLoader.h"
 
 Sprite::Sprite(const ComPtr<ID2D1Factory>& factory, const ComPtr<IWICImagingFactory>& wicFactory, const ComPtr<ID2D1HwndRenderTarget>& renderTarget,
-    std::string_view path, Size maxFrame) : mFrameCount{ 0 }, mMaxFrameCount{ maxFrame } {
+    std::string_view path, Size maxFrame, size_t frameEndWidth) : mFrameCount{ 0 }, mMaxFrameCount{ maxFrame }, mFrameEnd{ frameEndWidth } {
     mImage = Img::ImageLoad(factory, wicFactory, renderTarget, to_wstring(path));
 
     auto [px, py] = mImage->GetPixelSize();
     mFrameSize = D2D1::SizeU(px / maxFrame.width, py / maxFrame.height);
+
+    if (0 == mFrameEnd) {
+        mFrameEnd = mMaxFrameCount.width + mMaxFrameCount.height;
+    }
 }
 
 Sprite::Sprite(const ComPtr<ID2D1Factory>& factory, const ComPtr<IWICImagingFactory>& wicFactory, const ComPtr<ID2D1HwndRenderTarget>& renderTarget,
-    std::wstring_view path, Size maxFrame) : mFrameCount{ 0 }, mMaxFrameCount{ maxFrame } {
+    std::wstring_view path, Size maxFrame, size_t frameEndWidth) : mFrameCount{ 0 }, mMaxFrameCount{ maxFrame }, mFrameEnd{ frameEndWidth } {
     mImage = Img::ImageLoad(factory, wicFactory, renderTarget, path);
 
     auto [px, py] = mImage->GetPixelSize();
     mFrameSize = D2D1::SizeU(px / maxFrame.width, py / maxFrame.height);
+
+    if (0 == mFrameEnd) {
+        mFrameEnd = mMaxFrameCount.width + mMaxFrameCount.height;
+    }
 }
 
-Sprite::Sprite(ComPtr<ID2D1Bitmap> image, Size maxFrame) : mFrameCount{ 0 }, mMaxFrameCount{ maxFrame } {
+Sprite::Sprite(ComPtr<ID2D1Bitmap> image, Size maxFrame, size_t frameEndWidth) : mFrameCount{ 0 }, mMaxFrameCount{ maxFrame }, mFrameEnd{ frameEndWidth } {
     mImage = image;
 
     auto [px, py] = mImage->GetPixelSize();
     mFrameSize = D2D1::SizeU(px / maxFrame.width, py / maxFrame.height);
+
+    if (0 == mFrameEnd) {
+        mFrameEnd = mMaxFrameCount.width + mMaxFrameCount.height;
+    }
+}
+
+void Sprite::SetDuration(float duration) {
+    mDuration = duration;
+    mFramePerSecond = mDuration / mFrameEnd;
+}
+
+void Sprite::Update(float deltaTime) {
+    mCounter += deltaTime;
+    if (mCounter >= mFramePerSecond) {
+        AdvanceFrame();
+        mCounter = 0.0f;
+    }
 }
 
 void Sprite::AdvanceFrame() {
     ++mFrameCount;
 
-    if (mFrameCount > mMaxFrameCount.width * mMaxFrameCount.height - 1) {
+    if (mFrameCount > mFrameEnd - 1) {
         mFrameCount = 0;
     }
 }

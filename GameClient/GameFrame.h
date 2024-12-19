@@ -8,11 +8,6 @@
 //																		//
 //////////////////////////////////////////////////////////////////////////
 
-struct DebugInfo {
-    std::string fps{ "FPS: " };
-    std::string deltaTime{ "DeltaTime: "};
-};
-
 class GameFrame {
 public:
     GameFrame(HINSTANCE instance);
@@ -28,15 +23,17 @@ public:
     void InitCamera();
     void InitImgui();
     void InitText();
+    void InitObjects();
 
     void ResetSize();
-
-    void RenderDebugInfo();
 
     void Update();
     void ImguiRenderStart();
     void ImguiUpdateFrame();
+
+    void PrepareRender();
     void Render();
+    void RenderEnd();
 
 private:  
     HINSTANCE mInstance;
@@ -49,8 +46,6 @@ private:
     std::unique_ptr<class TextWriter> mTextWriter;      /* 텍스트 로딩용 클래스*/
     std::unique_ptr<class Camera> mCamera;              /* 카메라 */
     std::unique_ptr<class Timer> mTimer;                /* 타이머 */
-
-    std::unique_ptr<DebugInfo> mDebugInfo;
 
     std::unique_ptr<class Sprite> mSprite;
 

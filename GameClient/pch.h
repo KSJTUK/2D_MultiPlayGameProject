@@ -53,4 +53,5 @@
 /* ±‚≈∏ */
 #include "types.h"
 
+using namespace std::literals;
 using WINPROC = LRESULT(*)(HWND, UINT, WPARAM, LPARAM);

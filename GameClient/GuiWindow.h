@@ -50,13 +50,24 @@ private:
 //																		//
 //////////////////////////////////////////////////////////////////////////
 
+#include "InputBuffer.h"
+
+struct TextInfo {
+    std::string str{ };
+    bool nextSameLine{ false };
+};
+
 class TextWindow : public GuiWindow {
+    inline static constexpr size_t MAX_TEXT = 100;
+
 public:
     TextWindow();
     ~TextWindow();
 
 public:
+    void InputText(std::string_view str, bool nextSameLine =false);
+    virtual void UpdateContents() override final;
 
 private:
-
+    InputBuffer<TextInfo, MAX_TEXT> mTextBuffer{ };
 };

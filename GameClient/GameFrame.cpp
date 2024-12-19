@@ -129,7 +129,7 @@ void GameFrame::InitImgui() {
     ImGui_ImplWin32_Init(mMainWindow->GetHandle());
     ImGui_ImplD2D_Init(mRenderTarget.Get(), mTextWriter->GetWriteFactory().Get());
 
-    mGuiWindow = std::make_unique<GuiWindow>();
+    mGuiWindow = std::make_unique<TextWindow>();
 
     mGuiWindow->EnableWindowFlag(ImGuiWindowFlags_NoMove | ImGuiWindowFlags_UnsavedDocument | ImGuiWindowFlags_NoResize
         | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoNav);
@@ -145,6 +145,16 @@ void GameFrame::InitObjects() {
     mTimer = std::make_unique<Timer>();
     mSprite = std::make_unique<Sprite>(mD2Factory, mWICFactory, mRenderTarget, L"Asset/Explosions.png", D2D1::SizeU(9, 1));
     mSprite->SetDuration(1.0f);
+
+    mTimer->AddEvent(
+        1s,
+        [this]() { 
+            static auto prevCount = mTimer->GetFrameCount();
+            mGuiWindow->InputText("FPS: "s + std::to_string(mTimer->GetFrameCount() - prevCount));
+            prevCount = mTimer->GetFrameCount();
+            return true; 
+        }
+    );
 }
 
 void GameFrame::ResetSize() {
@@ -177,7 +187,7 @@ void GameFrame::PrepareRender() {
 void GameFrame::Render() {
     PrepareRender();
     // Render
-    mSprite->SetOpacity(0.1f);
+    mSprite->SetOpacity(1.0f);
     mSprite->Render(mRenderTarget, Position{ 100, 200 });
 
     mGuiWindow->Render();

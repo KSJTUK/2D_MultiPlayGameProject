@@ -62,12 +62,13 @@ void Timer::SampleDeltaTime()
 
 bool Timer::PopEvent()
 {
-	auto ev = mEvents.top();
-	mEvents.pop();
+	Event ev = *mEvents.begin();
 
 	if (ev.mInvokeTime < clock::now()) {
-		std::invoke(ev.mCallBack);
-		mEvents.emplace(clock::now() + ev.mTimeout, std::move(ev.mTimeout), std::move(ev.mCallBack));
+		if (std::invoke(ev.mCallBack)) {
+			mEvents.emplace(clock::now() + ev.mTimeout, std::move(ev.mTimeout), std::move(ev.mCallBack));
+		}
+		mEvents.erase(mEvents.begin());
 
 		return true;
 	}

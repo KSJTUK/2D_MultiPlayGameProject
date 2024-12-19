@@ -58,3 +58,28 @@ void GuiWindow::Render() {
 
     ImGui::End();
 }
+
+//////////////////////////////////////////////////////////////////////////
+//																		//
+//																		//
+//							TextWindow                                  //
+//					Text를 그리기 위한 Window								//
+//																		//
+//////////////////////////////////////////////////////////////////////////
+
+TextWindow::TextWindow() : mTextBuffer{ } { }
+
+TextWindow::~TextWindow() { }
+
+void TextWindow::InputText(std::string_view str, bool nextSameLine) {
+    mTextBuffer.Push(TextInfo{ std::string{ str }, nextSameLine});
+}
+
+void TextWindow::UpdateContents() {
+    for (const auto& [str, sameLine] : mTextBuffer) {
+        ImGui::Text(str.c_str());
+        if (sameLine) {
+            ImGui::SameLine();
+        }
+    }
+}

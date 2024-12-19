@@ -1,7 +1,7 @@
 #pragma once
 
 class TextWriter {
-    static constexpr int DefaultFontSize = 13;
+    static constexpr int DefaultFontSize = 15;
 
 public:
     TextWriter();

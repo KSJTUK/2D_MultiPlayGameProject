@@ -1,20 +1,44 @@
 #pragma once 
-
-/* 타이머는 같은 학과 김승범에게서 제공받음 */
-
+/*
+*  Time 으로 구현할 것들
+*
+1. Time.GetDeltaTime (V) ( GTime:: scaled / unscaled )
+설명: 마지막 프레임과 현재 프레임 사이의 시간을 초 단위로 반환합니다.
+용도: 프레임 속도에 무관한 이동, 애니메이션, 물리 시뮬레이션 등에 사용됩니다.
+2. Time.GetTimeSinceStarted (V)  ( GTime:: scaled / unscaled )
+설명: 게임이 시작된 후 경과한 시간을 초 단위로 반환합니다. Time.timeScale의 영향을 받습니다.
+용도: 게임 시작 후 경과 시간 기반의 이벤트 트리거에 사용됩니다.
+3. Time.SetTimeScale / GetTimeScale  (V)
+설명: 게임의 전반적인 시간 흐름 속도를 제어합니다.
+용도: 게임의 속도 조절, 일시 정지, 슬로우 모션 효과 등을 구현할 때 사용됩니다.
+4. Time.GetSmoothDeltaTime ( V )
+설명: 최근 몇 프레임 동안의 deltaTime의 평균을 반환합니다.
+용도: 애니메이션이나 이동의 부드러움을 유지하기 위해 사용됩니다.
+5. Time.GetFrameCount ( V )
+설명: 게임이 시작된 이후부터 렌더링된 프레임 수를 반환합니다.
+용도: 특정 프레임에서 이벤트를 발생시키거나, 프레임 기반 로직을 구현할 때 사용됩니다.
+6. Time.GetTimeSinceSceneStarted ( V )
+설명: 현재 씬(Scene)이 로드된 이후 경과한 시간을 반환합니다.
+용도: 특정 씬 내에서의 경과 시간 기반 로직을 처리할 때 사용됩니다.
+7. Time.AddEvent ( V )
+설명: 특정 시간이 지난 후에 이벤트를 발생시키도록 스케줄링합니다.
+	일회성으로 이벤트를 발생시키고 싶다면, 이벤트 Callable 에 false 를 리턴하도록 하면 되고, 주기적으로 이벤트를 발생시키고 싶아면, 이벤트 Callable 에 true 를 리턴하도록 하면 됩니다.
+용도: 특정 시간에 이벤트를 발생시키거나, 반복적인 이벤트를 처리할 때 사용됩니다.
+*/
 template<typename T>
 concept TimeUnit = std::chrono::_Is_duration_v<T>;
 
 class Timer {
+public:
 	using clock = std::chrono::high_resolution_clock;
 	using rep = double;
 	using period = std::nano;
 	using time_point = clock::time_point;
 	using duration = std::chrono::duration<double, period>;
-
+private:
 	//sceduled event 가 우선되는 문제가 있다. 
 	struct Event {
-		Event(std::chrono::time_point<clock> time, std::chrono::nanoseconds timeout, std::function<void()>&& callBack) {
+		Event(std::chrono::time_point<clock> time, std::chrono::nanoseconds timeout, std::function<bool()>&& callBack) {
 			mTimeout = timeout;
 			mInvokeTime = time;
 			mCallBack = callBack;
@@ -31,7 +55,7 @@ class Timer {
 
 		std::chrono::time_point<clock> mInvokeTime{};
 		std::chrono::nanoseconds mTimeout{};
-		std::function<void()> mCallBack{ []() {return false; } };
+		std::function<bool()> mCallBack{ []() {return false; } };
 	};
 
 public:
@@ -126,5 +150,5 @@ private:
 	const time_point		mAbsoluteStarted{ clock::now() };
 	double					mTimeScale{ 1.0 };
 
-	std::priority_queue<Event>			mEvents{};
+	std::set<Event>			mEvents{};
 };

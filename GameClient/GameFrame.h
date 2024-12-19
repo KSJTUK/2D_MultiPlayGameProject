@@ -27,9 +27,9 @@ public:
     void InitWIC();
     void InitCamera();
     void InitImgui();
-
-
     void InitText();
+
+    void ResetSize();
 
     void RenderDebugInfo();
 

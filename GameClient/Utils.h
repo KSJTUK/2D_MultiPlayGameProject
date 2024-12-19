@@ -98,6 +98,13 @@ public:
 		SolidBrush::renderTarget = renderTarget;
 	}
 
+	static void Destroy()
+	{
+		brushMap.clear();
+		SolidBrush::renderTarget->AddRef();
+		SolidBrush::renderTarget.Reset();
+	}
+
 	static ID2D1SolidColorBrush* GetBrush(D2D1::ColorF::Enum color)
 	{
 		unsigned long c = static_cast<unsigned long>(color);

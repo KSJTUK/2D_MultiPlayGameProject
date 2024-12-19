@@ -25,9 +25,20 @@ GameFrame::GameFrame(HINSTANCE instance) :
 }
 
 GameFrame::~GameFrame() {
+    // Imgui 에서 hwndRenderTarget의 ref count를 여러번 감소시키는 것으로 보임
+    // 오류 해결을 위한 임시 조치 -> Imgui destroy이전에 ref count를 알맞게 조정해줌
+    mRenderTarget->AddRef();
+
     ImGui_ImplD2D_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
+
+    SolidBrush::Destroy();
+    mRenderTarget.Reset();
+    mD2Factory.Reset();
+    mTextWriter.reset();
+    mWICFactory.Reset();
+    CoUninitialize();
 }
 
 SizeF GameFrame::GetCoordRate() const {
@@ -52,7 +63,22 @@ void GameFrame::InitDirect2D() {
     HRESULT hr;
 
     /* 멀티 쓰레드 환경에서 동작할 Factory 객체를 만드려면 D2D1_FACTORY_TYPE_MULTI_THREADED 값을 넣어준다. */
-    hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, mD2Factory.GetAddressOf());
+#if defined(DEBUG) || defined(_DEBUG)
+    D2D1_FACTORY_OPTIONS options;
+    options.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
+
+    hr = D2D1CreateFactory(
+        D2D1_FACTORY_TYPE_SINGLE_THREADED,
+        options,
+        mD2Factory.GetAddressOf()
+    );
+#else
+    hr = D2D1CreateFactory(
+        D2D1_FACTORY_TYPE_SINGLE_THREADED,
+        mD2Factory.GetAddressOf()
+    );
+#endif
+
     CheckHR(hr, std::source_location::current());
 
     auto rc = mMainWindow->GetRect();
@@ -110,6 +136,13 @@ void GameFrame::InitImgui() {
 void GameFrame::InitText() {
     mTextWriter = std::make_unique<TextWriter>();
     mDebugInfo = std::make_unique<DebugInfo>();
+}
+
+void GameFrame::ResetSize() {
+    auto rc = mMainWindow->GetRect();
+    Size resizedSize = D2D1::SizeU(rc.right - rc.left, rc.bottom - rc.top);
+    mCamera->SetViewRange(mRenderTarget);
+    mRenderTarget->Resize(resizedSize);
 }
 
 void GameFrame::RenderDebugInfo() {

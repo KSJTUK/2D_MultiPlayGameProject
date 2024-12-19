@@ -101,7 +101,6 @@ public:
 	static void Destroy()
 	{
 		brushMap.clear();
-		SolidBrush::renderTarget.Reset();
 	}
 
 	static ID2D1SolidColorBrush* GetBrush(D2D1::ColorF::Enum color)

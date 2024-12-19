@@ -70,7 +70,7 @@ void Sprite::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POIN
 
     auto dest = CreateRectF(position, mFrameSize);
 
-    renderTarget->DrawBitmap(mImage.Get(), dest, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, source);
+    renderTarget->DrawBitmap(mImage.Get(), dest, mOpacity, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, source);
 }
 
 void Sprite::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POINT_2F position, float rotAngle) {

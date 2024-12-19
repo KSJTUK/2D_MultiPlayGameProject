@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Window.h"
 #include "Resource.h"
+#include "GameFrame.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -10,6 +11,8 @@
 //																		//
 //																		//
 //////////////////////////////////////////////////////////////////////////
+
+extern std::unique_ptr<GameFrame> gameFramework;
 
 LRESULT WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -23,6 +26,11 @@ LRESULT WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PostQuitMessage(0);
             break;
         }
+        break;
+
+    case WM_SIZE:
+        if (gameFramework)
+            gameFramework->ResetSize();
         break;
 
     case WM_DESTROY:
@@ -74,6 +82,13 @@ Window::Window(HINSTANCE instance, std::wstring_view name, WindowMode mode, cons
 
     ShowWindow(mHandle, TRUE);
     UpdateWindow(mHandle);
+
+    SetWindowLong(mHandle, GWL_STYLE,
+        GetWindowLong(mHandle, GWL_STYLE) & ~WS_MINIMIZEBOX);
+    SetWindowLong(mHandle, GWL_STYLE,
+        GetWindowLong(mHandle, GWL_STYLE) & ~WS_MAXIMIZEBOX);
+    EnableMenuItem(GetSystemMenu(mHandle, FALSE), SC_CLOSE,
+        MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 }
 
 Window::~Window() { 

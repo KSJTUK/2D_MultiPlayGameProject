@@ -1,6 +1,6 @@
 #pragma once
 
-constexpr Size DEFAULT_WIDNOW_SIZE{ 1080, 800 };
+constexpr Size DEFAULT_WIDNOW_SIZE{ 1366, 768 };
 
 enum WindowMode {
     windowed,

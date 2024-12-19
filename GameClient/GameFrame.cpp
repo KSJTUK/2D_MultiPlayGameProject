@@ -34,11 +34,6 @@ GameFrame::~GameFrame() {
     ImGui::DestroyContext();
 
     SolidBrush::Destroy();
-    mRenderTarget.Reset();
-    mD2Factory.Reset();
-    mTextWriter.reset();
-    mWICFactory.Reset();
-    CoUninitialize();
 }
 
 SizeF GameFrame::GetCoordRate() const {
@@ -95,8 +90,6 @@ void GameFrame::InitDirect2D() {
 
 void GameFrame::InitWIC() {
     HRESULT hr;
-    hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
-    CheckHR(hr, std::source_location::current());
 
     hr = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(mWICFactory.GetAddressOf()));
     CheckHR(hr, std::source_location::current());

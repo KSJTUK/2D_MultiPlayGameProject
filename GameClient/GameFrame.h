@@ -47,6 +47,7 @@ private:
     std::unique_ptr<class Timer> mTimer;                /* ≈∏¿Ã∏” */
 
     std::unique_ptr<class Sprite> mSprite;
+    std::unique_ptr<class Sprite[]> mSprites;
 
     std::unique_ptr<class ChatWindow> mGuiWindow;
 

@@ -38,6 +38,7 @@
 #include <string_view>
 #include <format>
 
+#include <ranges>
 #include <numeric>
 #include <algorithm>
 

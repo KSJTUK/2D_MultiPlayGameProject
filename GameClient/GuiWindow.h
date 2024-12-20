@@ -71,3 +71,25 @@ public:
 private:
     InputBuffer<TextInfo, MAX_TEXT> mTextBuffer{ };
 };
+
+//////////////////////////////////////////////////////////////////////////
+//																		//
+//																		//
+//							ChatWindow                                  //
+//					     채팅을 위한 윈도우                               //
+//																		//
+//////////////////////////////////////////////////////////////////////////
+
+class ChatWindow : public GuiWindow {
+    inline static constexpr size_t MAX_CHAT = 100;
+public:
+    ChatWindow();
+    ~ChatWindow();
+
+public:
+    void InputText(std::string_view str);
+    virtual void UpdateContents() override final;
+
+private:
+    InputBuffer<std::string, MAX_CHAT> mChatBuffer{ };
+};

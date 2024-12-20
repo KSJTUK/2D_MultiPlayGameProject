@@ -48,7 +48,7 @@ private:
 
     std::unique_ptr<class Sprite> mSprite;
 
-    std::unique_ptr<class TextWindow> mGuiWindow;
+    std::unique_ptr<class ChatWindow> mGuiWindow;
 
     bool mShowDemoWindow{ true };
     bool mShowAnotherWindow{ false };

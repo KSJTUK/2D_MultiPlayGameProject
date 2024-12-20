@@ -83,3 +83,46 @@ void TextWindow::UpdateContents() {
         }
     }
 }
+
+//////////////////////////////////////////////////////////////////////////
+//																		//
+//																		//
+//							ChatWindow                                  //
+//					     채팅을 위한 윈도우                               //
+//																		//
+//////////////////////////////////////////////////////////////////////////
+
+ChatWindow::ChatWindow() { }
+
+ChatWindow::~ChatWindow() { }
+
+void ChatWindow::InputText(std::string_view str) { 
+    mChatBuffer.Push(std::string{ str });
+}
+
+void ChatWindow::UpdateContents() {
+    static char input[512]{ };
+    ImGui::BeginChild("ChatScrollRegion", ImVec2{ 0, -30 });
+
+     // 아래에서 위로 메시지 출력
+    for (const auto& str : mChatBuffer) {
+        ImGui::Text(str.c_str());
+    }
+
+    // 스크롤을 자동으로 맨 아래로 이동
+    if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY()) {
+        ImGui::SetScrollHereY(1.0f);
+    }
+
+    ImGui::EndChild();
+
+    ImGui::Separator(); // 구분선 추가
+    ImGui::InputText("##Input", input, IM_ARRAYSIZE(input), ImGuiInputTextFlags_EnterReturnsTrue);
+    // Enter 입력 시 메시지를 추가
+    if (::strlen(input) > 0 and ImGui::IsKeyPressed(ImGuiKey_Enter)) {
+        mChatBuffer.Push(std::string{ input });
+        ::memset(input, 0, 512); // 입력 필드 초기화
+    }
+    // 스크롤을 맨 아래로 유지
+    ImGui::SetScrollHereY(1.0f);
+}

@@ -26,6 +26,8 @@
 #include <source_location>
 
 /* C++ วฅมุ */
+#include <random>
+
 #include <functional>
 #include <array>
 #include <queue>

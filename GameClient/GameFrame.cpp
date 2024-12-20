@@ -129,7 +129,7 @@ void GameFrame::InitImgui() {
     ImGui_ImplWin32_Init(mMainWindow->GetHandle());
     ImGui_ImplD2D_Init(mRenderTarget.Get(), mTextWriter->GetWriteFactory().Get());
 
-    mGuiWindow = std::make_unique<TextWindow>();
+    mGuiWindow = std::make_unique<ChatWindow>();
 
     mGuiWindow->EnableWindowFlag(ImGuiWindowFlags_NoMove | ImGuiWindowFlags_UnsavedDocument | ImGuiWindowFlags_NoResize
         | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoNav);

@@ -12,7 +12,7 @@
 //																		//
 //////////////////////////////////////////////////////////////////////////
 
-extern std::unique_ptr<GameFrame> gameFramework;
+extern std::unique_ptr<GameFrame> gGameFramework;
 
 LRESULT WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -29,8 +29,8 @@ LRESULT WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
     case WM_SIZE:
-        if (gameFramework)
-            gameFramework->ResetSize();
+        if (gGameFramework)
+            gGameFramework->ResetSize();
         break;
 
     case WM_DESTROY:

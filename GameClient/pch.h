@@ -58,3 +58,5 @@
 
 using namespace std::literals;
 using WINPROC = LRESULT(*)(HWND, UINT, WPARAM, LPARAM);
+
+extern std::unique_ptr<class GameFrame> gGameFramework;

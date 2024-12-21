@@ -11,6 +11,8 @@
 
 #include "GuiWindow.h"
 
+#include "FadeEffect.h"
+
 //////////////////////////////////////////////////////////////////////////
 //																		//
 //																		//
@@ -155,6 +157,8 @@ void GameFrame::InitObjects() {
             return true; 
         }
     );
+
+    mTestFade = std::make_unique<FadeEffect>(FADE_OUT);
 }
 
 void GameFrame::ResetSize() {
@@ -168,6 +172,7 @@ void GameFrame::Update() {
     mTimer->AdvanceTime();
     const float deltaTime = mTimer->GetDeltaTime<float>();
     mSprite->Update(deltaTime);
+    mTestFade->Update(deltaTime);
 }
 
 void GameFrame::ImguiRenderStart() {
@@ -189,6 +194,7 @@ void GameFrame::Render() {
     // Render
     mSprite->SetOpacity(1.0f);
     mSprite->Render(mRenderTarget, Position{ 100, 200 });
+    mTestFade->Render(mRenderTarget);
 
     mGuiWindow->Render();
 

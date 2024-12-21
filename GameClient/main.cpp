@@ -2,8 +2,6 @@
 #include "Resource.h"
 #include "GameFrame.h"
 
-std::unique_ptr<GameFrame> gameFramework;
-
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _In_opt_ HINSTANCE hPrevInstance,
     _In_ LPWSTR    lpCmdLine,
@@ -15,7 +13,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_GAMECLIENT));
 
     MSG msg;
-    gameFramework = std::make_unique<GameFrame>(hInstance);
+    gGameFramework = std::make_unique<GameFrame>(hInstance);
 
     // 기본 메시지 루프입니다:
     while (true) {
@@ -31,8 +29,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
         else {
             /* TODO : 게임 루프(로직)가 들어갈 부분 */
-            gameFramework->Update();
-            gameFramework->Render();
+            gGameFramework->Update();
+            gGameFramework->Render();
         }
     }
 

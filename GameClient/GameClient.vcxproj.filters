@@ -94,6 +94,7 @@
     <ClInclude Include="RingBuffer.h" />
     <ClInclude Include="InputBuffer.h" />
     <ClInclude Include="Random.h" />
+    <ClInclude Include="FadeEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -159,6 +160,7 @@
     <ClCompile Include="RingBuffer.cpp" />
     <ClCompile Include="InputBuffer.cpp" />
     <ClCompile Include="Random.cpp" />
+    <ClCompile Include="FadeEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameClient.rc">

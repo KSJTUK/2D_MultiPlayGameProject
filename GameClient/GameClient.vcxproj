@@ -148,6 +148,7 @@
     <ClInclude Include="External\imgui\imstb_rectpack.h" />
     <ClInclude Include="External\imgui\imstb_textedit.h" />
     <ClInclude Include="External\imgui\imstb_truetype.h" />
+    <ClInclude Include="FadeEffect.h" />
     <ClInclude Include="GameFrame.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageLoader.h" />
@@ -195,6 +196,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="FadeEffect.cpp" />
     <ClCompile Include="GameFrame.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageLoader.cpp" />

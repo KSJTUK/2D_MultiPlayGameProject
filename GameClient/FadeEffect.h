@@ -11,13 +11,14 @@ enum FadeType {
 
 class FadeEffect {
 public:
-    FadeEffect(FadeType type=FADE_OUT);
+    FadeEffect(FadeType type=FADE_OUT, float due=DEFAULT_EFFECT_DUE);
     ~FadeEffect();
 
 public:
+    FadeType GetCurrentFadeType() const;
+
     void Reset();
-    void SetDuration(const float due);
-    void SetType(const FadeType type);
+    void ChangeEffect(const FadeType type, float due=DEFAULT_EFFECT_DUE);
 
 public:
     void Update(const float deltaTime);

@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Window.h"
 #include "Resource.h"
 #include "GameFrame.h"
@@ -47,7 +47,7 @@ LRESULT WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 //																		//
 //																		//
 //							Widow                                       //
-//					   ¸ŞÀÎ À©µµ¿ì »ı¼º       							//
+//					   ë©”ì¸ ìœˆë„ìš° ìƒì„±       							//
 //																		//
 //////////////////////////////////////////////////////////////////////////
 
@@ -78,7 +78,7 @@ Window::Window(HINSTANCE instance, std::wstring_view name, WindowMode mode, cons
         PostQuitMessage(EXIT_FAILURE);
     }
 
-    __analysis_assume(mHandle != nullptr); /* nullptr °Ë»ç¸¦ À§¿¡¼­ ÇÏ°íÀÖÀ½¿¡µµ ¿¡·¯°¡ ³ª¼­ ³ÖÀº ÄÚµå */
+    __analysis_assume(mHandle != nullptr); /* nullptr ê²€ì‚¬ë¥¼ ìœ„ì—ì„œ í•˜ê³ ìˆìŒì—ë„ ì—ëŸ¬ê°€ ë‚˜ì„œ ë„£ì€ ì½”ë“œ */
 
     ShowWindow(mHandle, TRUE);
     UpdateWindow(mHandle);

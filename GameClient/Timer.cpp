@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Timer.h"
 
 Timer::Timer() { }
@@ -20,7 +20,7 @@ uint64_t Timer::GetFrameCount() {
 	return mFrameCount;
 }
 
-// °¢ ÇÁ·¹ÀÓÀÌ ½ÃÀÛµÉ ¶§¸¶´Ù È£ÃâÇÔ 
+// ê° í”„ë ˆì„ì´ ì‹œì‘ë  ë•Œë§ˆë‹¤ í˜¸ì¶œí•¨ 
 void Timer::AdvanceTime() {
 	Timer::UpdateDeltaTime();
 	Timer::SampleDeltaTime();
@@ -28,7 +28,7 @@ void Timer::AdvanceTime() {
 	Timer::CheckEvent();
 }
 
-// Scene ÀÌ ½ÃÀÛµÉ ¶§ È£Ãâ 
+// Scene ì´ ì‹œì‘ë  ë•Œ í˜¸ì¶œ 
 void Timer::StartSceneTime() {
 	mSceneStarted = clock::now();
 }

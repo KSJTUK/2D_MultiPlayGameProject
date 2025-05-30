@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "targetver.h"
 
@@ -6,26 +6,26 @@
 
 /* Direct2D Library */
 #include <d2d1_1.h>                 /* Direct2D API */
-#include <d2d1_1helper.h>           /* C++ ¿¡¼­ À¯¿ëÇÑ ÇÔ¼ö, Å¬·¡½º, ±¸Á¶Ã¼µîÀÌ Á¤ÀÇµÊ */
-#include <d2dbasetypes.h>           /* Á¡, ¼±, »ç°¢Çü µî ±âº»ÀûÀÎ ±×¸®±â Á¤º¸ */
-#include <d2derr.h>                 /* Direct2D API ¿¡¼­ »ç¿ëÇÏ´Â ¿¡·¯ ÄÚµå°¡ Á¤ÀÇµÈ Çì´õ */
-#include <wincodec.h>               /* WIC »ç¿ëÀ» À§ÇÑ Çì´õ */
-#include <d2d1effects.h>            /* ÀÌ¹ÌÁö È¿°ú¿Í °ü·ÃµÈ °Íµé Á¤ÀÇ */
-#include <d2d1effecthelpers.h>      /* ÀÌ¹ÌÁö È¿°ú °ü·Ã C++ ÇïÆÛ */
-#include <dwrite_3.h>               /* ÅØ½ºÆ® Ãâ·ÂÀ» À§ÇÑ Çì´õ */
+#include <d2d1_1helper.h>           /* C++ ì—ì„œ ìœ ìš©í•œ í•¨ìˆ˜, í´ë˜ìŠ¤, êµ¬ì¡°ì²´ë“±ì´ ì •ì˜ë¨ */
+#include <d2dbasetypes.h>           /* ì , ì„ , ì‚¬ê°í˜• ë“± ê¸°ë³¸ì ì¸ ê·¸ë¦¬ê¸° ì •ë³´ */
+#include <d2derr.h>                 /* Direct2D API ì—ì„œ ì‚¬ìš©í•˜ëŠ” ì—ëŸ¬ ì½”ë“œê°€ ì •ì˜ëœ í—¤ë” */
+#include <wincodec.h>               /* WIC ì‚¬ìš©ì„ ìœ„í•œ í—¤ë” */
+#include <d2d1effects.h>            /* ì´ë¯¸ì§€ íš¨ê³¼ì™€ ê´€ë ¨ëœ ê²ƒë“¤ ì •ì˜ */
+#include <d2d1effecthelpers.h>      /* ì´ë¯¸ì§€ íš¨ê³¼ ê´€ë ¨ C++ í—¬í¼ */
+#include <dwrite_3.h>               /* í…ìŠ¤íŠ¸ ì¶œë ¥ì„ ìœ„í•œ í—¤ë” */
 
-/* Com °´Ã¼ */
+/* Com ê°ì²´ */
 #include <comdef.h>
 #include <wrl/client.h>
 
 #pragma comment(lib, "DWrite.lib")
 #pragma comment(lib, "D2D1.lib")
 
-/* debug ¿ëµµ */
+/* debug ìš©ë„ */
 #include <crtdbg.h>
 #include <source_location>
 
-/* C++ Ç¥ÁØ */
+/* C++ í‘œì¤€ */
 #include <random>
 
 #include <functional>
@@ -53,7 +53,7 @@
 #include "External/imgui/imgui_impl_d2d.h"
 #include "External/imgui/imgui_impl_win32.h"
 
-/* ±âÅ¸ */
+/* ê¸°íƒ€ */
 #include "types.h"
 
 using namespace std::literals;

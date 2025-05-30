@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 inline std::wstring to_wstring(std::string_view str)
 {
@@ -9,7 +9,7 @@ inline void CheckHR(const HRESULT& hr, const std::source_location& location=std:
 {
 	if (FAILED(hr)) {
 		_com_error err{ hr };
-		std::wstring result = std::format(L"¿À·ù À§Ä¡ : {}\n{} \n\n Error : \n{}",
+		std::wstring result = std::format(L"ì˜¤ë¥˜ ìœ„ì¹˜ : {}\n{} \n\n Error : \n{}",
 			to_wstring(location.file_name()), to_wstring(location.function_name()), err.ErrorMessage());
 
 		::MessageBoxW(nullptr, result.c_str(), L"Error", MB_OK | MB_ICONERROR);
@@ -90,7 +90,7 @@ inline D2D1_RECT_F CreateRectF(const Position& pos, const Size& size)
 	return D2D1::RectF(pos.x - halfSize.width, pos.y - halfSize.height, pos.x + halfSize.width, pos.y + halfSize.height);
 }
 
-/* ÀÚÁÖ ¾µ¸¸ÇÑ »ö»óÀÇ solid brushµéÀ» ¸ğ¾Æ³õÀÚ */
+/* ìì£¼ ì“¸ë§Œí•œ ìƒ‰ìƒì˜ solid brushë“¤ì„ ëª¨ì•„ë†“ì */
 class SolidBrush {
 public:
 	static void Init(ComPtr<ID2D1HwndRenderTarget> renderTarget) 

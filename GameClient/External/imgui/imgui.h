@@ -2627,6 +2627,7 @@ struct ImGuiTextFilter
     IMGUI_API bool      PassFilter(const char* text, const char* text_end = NULL) const;
     IMGUI_API void      Build();
     void                Clear()          { InputBuf[0] = 0; Build(); }
+
     bool                IsActive() const { return !Filters.empty(); }
 
     // [Internal]
@@ -3926,6 +3927,7 @@ namespace ImGui
 #include IMGUI_USER_H_FILENAME
 #else
 #include "imgui_user.h"
+#include "GameObject.h"
 #endif
 #endif
 

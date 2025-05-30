@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 template <typename T, size_t size>
 class InputBufferIterator {
@@ -152,7 +152,7 @@ public:
     }
 
 public:
-    // STL È£È¯À» À§ÇÑ ÇÔ¼öµé
+    // STL í˜¸í™˜ì„ ìœ„í•œ í•¨ìˆ˜ë“¤
     iterator begin() {
         return iterator{ mBuffer.data(), mHead };
     }

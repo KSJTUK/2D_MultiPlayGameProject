@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Image.h"
 #include "ImageLoader.h"
 
@@ -16,7 +16,15 @@ Image::Image(ComPtr<ID2D1Bitmap> image) {
     mImage = image;
 }
 
-void Image::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POINT_2F position) {
+void Image::Update(float deltaTime) { }
+
+void Image::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POINT_2F position, float rotAngle, float opacity) {
+    Matrix3x2 oldTrans;
+    renderTarget->GetTransform(&oldTrans);
+    /* ì¶œë ¥ ëŒ€ìƒ ì§€ì ì˜ ì¤‘ì‹¬ì„ ê¸°ì¤€ìœ¼ë¡œ íšŒì „ */
+    renderTarget->SetTransform(D2D1::Matrix3x2F::Rotation(rotAngle, position) * oldTrans);
+
+    // Rendering
     SizeF size = mImage->GetSize();
     auto source = D2D1::RectF(
         0.0f, 0.0f, size.width, size.height
@@ -24,15 +32,8 @@ void Image::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POINT
 
     auto dest = CreateRectF(position, size);
 
-    renderTarget->DrawBitmap(mImage.Get(), dest, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, source);
-}
+    renderTarget->DrawBitmap(mImage.Get(), dest, opacity, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, source);
 
-void Image::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POINT_2F position, float rotAngle) {
-    Matrix3x2 oldTrans;
-    renderTarget->GetTransform(&oldTrans);
-    /* Ãâ·Â ´ë»ó ÁöÁ¡ÀÇ Áß½ÉÀ» ±âÁØÀ¸·Î È¸Àü */
-    renderTarget->SetTransform(D2D1::Matrix3x2F::Rotation(rotAngle, position) * oldTrans);
-    Render(renderTarget, position);
-    /* Ãâ·Â ÇÑ ÈÄ¿¡´Â ´Ù½Ã ¿ø·¡ÀÇ º¯È¯Çà·Ä·Î º¯°æ */
+    /* ì¶œë ¥ í•œ í›„ì—ëŠ” ë‹¤ì‹œ ì›ëž˜ì˜ ë³€í™˜í–‰ë ¬ë¡œ ë³€ê²½ */
     renderTarget->SetTransform(oldTrans);
 }

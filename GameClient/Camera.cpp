@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "Camera.h"
 
 Position Camera::GetPosition() const {
@@ -19,6 +19,12 @@ void Camera::SetPosition(const Position& position) {
 
 void Camera::SetViewRange(const ComPtr<ID2D1HwndRenderTarget>& renderTarget) {
     mViewRange = renderTarget->GetPixelSize();
+}
+
+void Camera::Clamp(Position ltMap, Position rbMap) {
+    Size halfView{ mViewRange.width / 2 , mViewRange.width / 2 };
+    mPosition.x = std::clamp(mPosition.x, ltMap.x + halfView.width, rbMap.x - halfView.width);
+    mPosition.y = std::clamp(mPosition.y, ltMap.y + halfView.height, rbMap.y - halfView.height);
 }
 
 void Camera::ViewMatrix(const ComPtr<ID2D1HwndRenderTarget>& renderTarget) {

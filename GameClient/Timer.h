@@ -1,4 +1,4 @@
-#pragma once 
+Ôªø#pragma once 
 
 template<typename T>
 concept TimeUnit = std::chrono::_Is_duration_v<T>;
@@ -20,7 +20,7 @@ public:
 	};
 
 private:
-	//sceduled event ∞° øÏº±µ«¥¬ πÆ¡¶∞° ¿÷¥Ÿ. 
+	//sceduled event Í∞Ä Ïö∞ÏÑ†ÎêòÎäî Î¨∏Ï†úÍ∞Ä ÏûàÎã§. 
 	struct Event {
 		Event(std::chrono::time_point<clock> time, std::chrono::nanoseconds timeout, std::function<bool()>&& callBack) {
 			mTimeout = timeout;
@@ -46,7 +46,7 @@ public:
 	Timer();
 	~Timer();
 
-	template<typename ResultTy = double, TimeUnit Tu = std::chrono::seconds>
+	template<typename ResultTy = float, TimeUnit Tu = std::chrono::seconds>
 	[[nodiscard]]
 	ResultTy GetDeltaTime(scaled sc = scaled::result_time_unscaled) {
 		if (sc == scaled::result_time_scaled) {
@@ -56,7 +56,7 @@ public:
 		return std::chrono::duration_cast<std::chrono::duration<ResultTy, typename Tu::period>>(mDeltaTime).count();
 	}
 
-	template<typename ResultTy = double, TimeUnit Tu = std::chrono::seconds>
+	template<typename ResultTy = float, TimeUnit Tu = std::chrono::seconds>
 	[[nodiscard]]
 	ResultTy GetTimeSinceStarted(scaled sc = scaled::result_time_unscaled) {
 		if (sc == scaled::result_time_scaled) {
@@ -74,7 +74,7 @@ public:
 		return std::chrono::duration_cast<std::chrono::duration<ResultTy, typename Tu::period>>(Elapsed).count();
 	}
 
-	template<typename ResultTy = double, TimeUnit Tu = std::chrono::seconds>
+	template<typename ResultTy = float, TimeUnit Tu = std::chrono::seconds>
 	[[nodiscard]]
 	ResultTy GetSmoothDeltaTime() {
 		auto sumofSamples = std::accumulate(mDeltaTimeBuffer.begin(), mDeltaTimeBuffer.end(), duration::zero(),

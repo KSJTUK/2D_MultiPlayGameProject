@@ -11,32 +11,50 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{c057c4ac-6307-4070-8a4b-43b24e485092}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Frame">
-      <UniqueIdentifier>{a34615fb-7efc-44f2-b151-ac408f751856}</UniqueIdentifier>
+    <Filter Include="RenderingPart">
+      <UniqueIdentifier>{21bf2631-c547-4c44-8a90-fa896cc36c07}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Image">
-      <UniqueIdentifier>{52321c18-0a1d-4d81-bef2-0fa6bda0f4ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Rendering">
+    <Filter Include="RenderingPart\Rendering">
       <UniqueIdentifier>{294ec0b1-c2ab-40b8-bcb5-2f23ad2b7c41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Imgui">
+    <Filter Include="RenderingPart\Imgui">
       <UniqueIdentifier>{e88f3632-5990-418e-9cab-8da1d7f9d1b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Frame\Effect">
-      <UniqueIdentifier>{c8a63c81-f0ca-4220-b9b4-4f4bf8a8b352}</UniqueIdentifier>
+    <Filter Include="RenderingPart\Image">
+      <UniqueIdentifier>{52321c18-0a1d-4d81-bef2-0fa6bda0f4ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{b4fdaf02-5439-4d2d-8fcf-263da5678977}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Frame\Window">
+    <Filter Include="RenderingPart\Window">
       <UniqueIdentifier>{bdc5fdbb-488a-43f0-b2da-2e676f8c9ad8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Frame\Input">
+    <Filter Include="RenderingPart\Input">
       <UniqueIdentifier>{b59bd02c-b1dc-4073-a216-b17dcf0001b1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Frame\Buffer">
+    <Filter Include="RenderingPart\Effect">
+      <UniqueIdentifier>{c8a63c81-f0ca-4220-b9b4-4f4bf8a8b352}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RenderingPart\Buffer">
       <UniqueIdentifier>{306c139c-58d2-4977-bacb-52a8de680898}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GamePart">
+      <UniqueIdentifier>{0cea0de6-d8ab-4004-8b0c-cc3ab57bc0e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GamePart\GameObject">
+      <UniqueIdentifier>{c5626f1d-333b-4796-8b7f-9442c49467b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GamePart\Component">
+      <UniqueIdentifier>{55077e3c-fb3e-4b00-bf02-e2735d63a4f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GamePart\Component\Render">
+      <UniqueIdentifier>{958a8646-2870-4fd1-a534-ca0580a49402}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GamePart\Component\Bounding">
+      <UniqueIdentifier>{09f6dc41-028a-4933-a03f-11ff5ad99684}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GamePart\Component\Input">
+      <UniqueIdentifier>{ff71695c-2ee9-4a92-add0-3eaeb482fd3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GamePart\Scene">
+      <UniqueIdentifier>{b4fdaf02-5439-4d2d-8fcf-263da5678977}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -56,76 +74,82 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Image.h">
-      <Filter>Image</Filter>
+      <Filter>RenderingPart\Image</Filter>
     </ClInclude>
     <ClInclude Include="ImageLoader.h">
-      <Filter>Image</Filter>
+      <Filter>RenderingPart\Image</Filter>
     </ClInclude>
     <ClInclude Include="Sprite.h">
-      <Filter>Image</Filter>
+      <Filter>RenderingPart\Image</Filter>
     </ClInclude>
     <ClInclude Include="TextWriter.h">
-      <Filter>Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="External\imgui\imconfig.h">
-      <Filter>Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="External\imgui\imgui.h">
-      <Filter>Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="External\imgui\imgui_impl_d2d.h">
-      <Filter>Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="External\imgui\imgui_impl_win32.h">
-      <Filter>Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="External\imgui\imgui_internal.h">
-      <Filter>Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="External\imgui\imstb_rectpack.h">
-      <Filter>Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="External\imgui\imstb_textedit.h">
-      <Filter>Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="External\imgui\imstb_truetype.h">
-      <Filter>Imgui</Filter>
+      <Filter>RenderingPart\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="Effect.h">
-      <Filter>Frame\Effect</Filter>
+      <Filter>RenderingPart\Effect</Filter>
     </ClInclude>
     <ClInclude Include="FadeEffect.h">
-      <Filter>Frame\Effect</Filter>
+      <Filter>RenderingPart\Effect</Filter>
     </ClInclude>
     <ClInclude Include="InputBuffer.h">
-      <Filter>Frame\Buffer</Filter>
+      <Filter>RenderingPart\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="RingBuffer.h">
-      <Filter>Frame\Buffer</Filter>
+      <Filter>RenderingPart\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="Random.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
-      <Filter>Scene</Filter>
+      <Filter>GamePart\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Frame\Window</Filter>
+      <Filter>RenderingPart\Window</Filter>
     </ClInclude>
     <ClInclude Include="GameFrame.h">
-      <Filter>Frame\Window</Filter>
+      <Filter>RenderingPart\Window</Filter>
     </ClInclude>
     <ClInclude Include="GuiWindow.h">
-      <Filter>Frame\Window</Filter>
+      <Filter>RenderingPart\Window</Filter>
     </ClInclude>
     <ClInclude Include="Window.h">
-      <Filter>Frame\Window</Filter>
+      <Filter>RenderingPart\Window</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
-      <Filter>Frame\Input</Filter>
+      <Filter>RenderingPart\Input</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>Frame\Input</Filter>
+      <Filter>RenderingPart\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GamePart\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingComponent.h">
+      <Filter>RenderingPart\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="External\imgui\imconfig.h">
+      <Filter>RenderingPart\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="External\imgui\imgui.h">
+      <Filter>RenderingPart\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="External\imgui\imgui_impl_d2d.h">
+      <Filter>RenderingPart\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="External\imgui\imgui_impl_win32.h">
+      <Filter>RenderingPart\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="External\imgui\imgui_internal.h">
+      <Filter>RenderingPart\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="External\imgui\imstb_rectpack.h">
+      <Filter>RenderingPart\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="External\imgui\imstb_textedit.h">
+      <Filter>RenderingPart\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="External\imgui\imstb_truetype.h">
+      <Filter>RenderingPart\Imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -142,73 +166,79 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="Image.cpp">
-      <Filter>Image</Filter>
+      <Filter>RenderingPart\Image</Filter>
     </ClCompile>
     <ClCompile Include="ImageLoader.cpp">
-      <Filter>Image</Filter>
+      <Filter>RenderingPart\Image</Filter>
     </ClCompile>
     <ClCompile Include="Sprite.cpp">
-      <Filter>Image</Filter>
+      <Filter>RenderingPart\Image</Filter>
     </ClCompile>
     <ClCompile Include="TextWriter.cpp">
-      <Filter>Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="External\imgui\imgui.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="External\imgui\imgui_demo.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="External\imgui\imgui_draw.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="External\imgui\imgui_impl_d2d.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="External\imgui\imgui_impl_win32.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="External\imgui\imgui_tables.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="External\imgui\imgui_widgets.cpp">
-      <Filter>Imgui</Filter>
+      <Filter>RenderingPart\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Effect.cpp">
-      <Filter>Frame\Effect</Filter>
+      <Filter>RenderingPart\Effect</Filter>
     </ClCompile>
     <ClCompile Include="FadeEffect.cpp">
-      <Filter>Frame\Effect</Filter>
+      <Filter>RenderingPart\Effect</Filter>
     </ClCompile>
     <ClCompile Include="InputBuffer.cpp">
-      <Filter>Frame\Buffer</Filter>
+      <Filter>RenderingPart\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="RingBuffer.cpp">
-      <Filter>Frame\Buffer</Filter>
+      <Filter>RenderingPart\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="Random.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>Scene</Filter>
+      <Filter>GamePart\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Frame\Window</Filter>
+      <Filter>RenderingPart\Window</Filter>
     </ClCompile>
     <ClCompile Include="GameFrame.cpp">
-      <Filter>Frame\Window</Filter>
+      <Filter>RenderingPart\Window</Filter>
     </ClCompile>
     <ClCompile Include="GuiWindow.cpp">
-      <Filter>Frame\Window</Filter>
+      <Filter>RenderingPart\Window</Filter>
     </ClCompile>
     <ClCompile Include="Window.cpp">
-      <Filter>Frame\Window</Filter>
+      <Filter>RenderingPart\Window</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
-      <Filter>Frame\Input</Filter>
+      <Filter>RenderingPart\Input</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
-      <Filter>Frame\Input</Filter>
+      <Filter>RenderingPart\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GamePart\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderingComponent.cpp">
+      <Filter>RenderingPart\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="External\imgui\imgui.cpp">
+      <Filter>RenderingPart\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="External\imgui\imgui_demo.cpp">
+      <Filter>RenderingPart\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="External\imgui\imgui_draw.cpp">
+      <Filter>RenderingPart\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="External\imgui\imgui_impl_d2d.cpp">
+      <Filter>RenderingPart\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="External\imgui\imgui_impl_win32.cpp">
+      <Filter>RenderingPart\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="External\imgui\imgui_tables.cpp">
+      <Filter>RenderingPart\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="External\imgui\imgui_widgets.cpp">
+      <Filter>RenderingPart\Imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

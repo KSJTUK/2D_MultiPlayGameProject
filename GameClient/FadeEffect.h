@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 inline constexpr float DEFAULT_EFFECT_DUE = 3.0f;
 

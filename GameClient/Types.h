@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 using Size = D2D1_SIZE_U;
 using SizeF = D2D1_SIZE_F;
@@ -17,3 +17,50 @@ using Matrix4x4 = D2D1::Matrix4x4F;
 
 template <typename T>
 using ComPtr = Microsoft::WRL::ComPtr<T>;
+
+struct Position : public D2D1_POINT_2F {
+    Position() : D2D1_POINT_2F{ 0.0f, 0.0f } {}
+    Position(float x, float y) : D2D1_POINT_2F{ x, y } {}
+    Position(const Position& other) : D2D1_POINT_2F{ other.x, other.y } {}
+    Position(Position&& other) noexcept : D2D1_POINT_2F{ other.x, other.y } {}
+    Position& operator=(const Position& other) { x = other.x; y = other.y; return *this; }
+    Position& operator=(Position&& other) noexcept { x = other.x; y = other.y; return *this; }
+
+    Position operator+(const Position& other) { return Position{ x + other.x, y + other.y }; }
+    void operator+=(const Position& other) { x += other.x; y += other.y; }
+
+    Position operator-(const Position& other) { return Position{ x - other.x, y - other.y }; }
+    void operator-=(const Position& other) { x -= other.x; y -= other.y; }
+
+    Position& operator=(const D2D1_POINT_2F& other) { x = other.x; y = other.y; return *this; }
+    Position& operator=(D2D1_POINT_2F&& other) noexcept { x = other.x; y = other.y; return *this; }
+
+    Position operator+(const D2D1_POINT_2F& other) { return Position{ x + other.x, y + other.y }; }
+    void operator+=(const D2D1_POINT_2F& other) { x += other.x; y += other.y; }
+
+    Position operator-(const D2D1_POINT_2F& other) { return Position{ x - other.x, y - other.y }; }
+    void operator-=(const D2D1_POINT_2F& other) { x -= other.x; y -= other.y; }
+
+    Position operator*(float scalar) { return Position{ x * scalar, y * scalar }; }
+    void operator*=(float scalar) { x *= scalar; y *= scalar; }
+
+    Position operator-() { return Position{ -x, -y }; }
+
+    friend Position operator*(float scalar, const Position& pos) { return Position{ pos.x * scalar, pos.y * scalar }; }
+
+    float LengthSq() const {
+        return x * x + y * y;
+    }
+
+    float Length() const {
+        return std::sqrtf(LengthSq());
+    }
+
+    float Dot(const Position& other) {
+        return other.x * x + other.y * y;
+    }
+
+    static float Dot(const Position& pos1, const Position& pos2) {
+        return pos1.x * pos2.x + pos1.y * pos2.y;
+    }
+};

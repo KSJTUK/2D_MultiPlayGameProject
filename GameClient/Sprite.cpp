@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Sprite.h"
 #include "ImageLoader.h"
 
@@ -59,7 +59,7 @@ void Sprite::AdvanceFrame() {
 }
 
 void Sprite::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POINT_2F position, float rotAngle, float opacity) {
-    /* ±×¸± ´ë»óÀÇ ÇÁ·¹ÀÓ Á¤º¸¸¦ °è»ê */
+    /* ê·¸ë¦´ ëŒ€ìƒì˜ í”„ë ˆì„ ì •ë³´ë¥¼ ê³„ì‚° */
     long frameX = mFrameCount % mMaxFrameCount.width;
     long frameY = mFrameCount / mMaxFrameCount.width;
     auto source = D2D1::RectF(
@@ -73,12 +73,12 @@ void Sprite::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POIN
 
     Matrix3x2 oldTrans;
     renderTarget->GetTransform(&oldTrans);
-    /* Ãâ·Â ´ë»ó ÁöÁ¡ÀÇ Áß½ÉÀ» ±âÁØÀ¸·Î È¸Àü */
+    /* ì¶œë ¥ ëŒ€ìƒ ì§€ì ì˜ ì¤‘ì‹¬ì„ ê¸°ì¤€ìœ¼ë¡œ íšŒì „ */
     renderTarget->SetTransform(D2D1::Matrix3x2F::Rotation(rotAngle, position) * oldTrans);
 
     renderTarget->DrawBitmap(mImage.Get(), dest, opacity, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, source);
     
-    /* Ãâ·Â ÇÑ ÈÄ¿¡´Â ´Ù½Ã ¿ø·¡ÀÇ º¯È¯Çà·Ä·Î º¯°æ */
+    /* ì¶œë ¥ í•œ í›„ì—ëŠ” ë‹¤ì‹œ ì›ë˜ì˜ ë³€í™˜í–‰ë ¬ë¡œ ë³€ê²½ */
     renderTarget->SetTransform(oldTrans);
 }
 

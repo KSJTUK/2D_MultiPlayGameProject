@@ -17,8 +17,9 @@ public:
     Size GetViewRange() const;
 
     void SetPosition(const Position& position);
-
     void SetViewRange(const ComPtr<ID2D1HwndRenderTarget>& renderTarget);
+
+    void Clamp(Position ltMap, Position rbMap);
 
     void ViewMatrix(const ComPtr<ID2D1HwndRenderTarget>& renderTarget);
 

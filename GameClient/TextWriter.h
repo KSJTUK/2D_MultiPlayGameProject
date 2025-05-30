@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 inline constexpr Position STATIC_DEBUG_TEXT_FRAME = Position{ 300.0f, -300.0f };
 static constexpr float DEFAULT_FONT_SIZE = 15.0f;
@@ -30,7 +30,7 @@ public:
     bool SetFont(uint32_t fontKey);
     bool LoadFontFromFile(uint32_t fontKey, const std::filesystem::path& path, FontProperties& fontProp);
 
-    /// Ç×»ó ID2D1RenderTargetÀÇ BeginDraw È£ÃâÈÄ, EndDraw È£Ãâ Àü »ç¿ëÇÒ °Í
+    /// í•­ìƒ ID2D1RenderTargetì˜ BeginDraw í˜¸ì¶œí›„, EndDraw í˜¸ì¶œ ì „ ì‚¬ìš©í•  ê²ƒ
     void WriteText(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, const Position& pos, std::wstring_view str);
     void WriteText(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, const Position& stPos, std::initializer_list<const char*> strs);
     void WriteText(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, const Position& stPos, std::initializer_list<std::wstring_view> strs);
@@ -40,10 +40,10 @@ public:
     template <typename It> requires std::is_convertible_v<typename std::iterator_traits<It>::value_type, std::wstring_view>
     void WriteText(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, const Position& stPos, It strBeg, It strEnd);
 
-    /// Ç×»ó ID2D1RenderTargetÀÇ BeginDraw È£ÃâÈÄ, EndDraw È£Ãâ Àü »ç¿ëÇÒ °Í
+    /// í•­ìƒ ID2D1RenderTargetì˜ BeginDraw í˜¸ì¶œí›„, EndDraw í˜¸ì¶œ ì „ ì‚¬ìš©í•  ê²ƒ
     void WriteText(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, const Position& pos, std::wstring_view str, D2D1::ColorF::Enum bkColor);
 
-    /// Ç×»ó ID2D1RenderTargetÀÇ BeginDraw È£ÃâÈÄ, EndDraw È£Ãâ Àü »ç¿ëÇÒ °Í
+    /// í•­ìƒ ID2D1RenderTargetì˜ BeginDraw í˜¸ì¶œí›„, EndDraw í˜¸ì¶œ ì „ ì‚¬ìš©í•  ê²ƒ
     void WriteColorText(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, const Position& pos, std::wstring_view str, D2D1::ColorF::Enum textColor);
 
     ComPtr<IDWriteFactory5> GetWriteFactory();

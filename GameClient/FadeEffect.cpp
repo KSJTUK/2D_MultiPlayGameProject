@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "FadeEffect.h"
 #include "GameFrame.h"
 #include "Utils.h"
@@ -45,7 +45,9 @@ void FadeEffect::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget) {
     GetClientRect(renderTarget->GetHwnd(), &rc);
     auto brush = SolidBrush::GetBrush(D2D1::ColorF::Black);
     brush->SetOpacity(mAlpha);
-    renderTarget->FillRectangle(D2D1::RectF(rc.left, rc.top, rc.right, rc.bottom), brush);
+
+    RectF fRC{ D2D1::RectF(static_cast<float>(rc.left), static_cast<float>(rc.top), static_cast<float>(rc.right), static_cast<float>(rc.bottom)) };
+    renderTarget->FillRectangle(fRC, brush);
     brush->SetOpacity(1.0f);
 
     renderTarget->SetTransform(oldTrans);

@@ -52,12 +52,18 @@ SizeF GameFrame::GetCoordRate() const {
     return SizeF{ rtSize.width / clientSize.width, rtSize.height / clientSize.height };
 }
 
+std::unique_ptr<class Camera>& GameFrame::GetMainCamera() {
+    return mCamera;
+}
+
 void GameFrame::Init() {
     InitDirect2D();
     InitCamera();
     InitText();
     InitImgui();
     InitObjects();
+
+    ResetSize();
 }
 
 void GameFrame::InitDirect2D() {
@@ -98,8 +104,8 @@ void GameFrame::InitDirect2D() {
 void GameFrame::InitCamera() {
     mCamera = std::make_unique<Camera>();
     auto size = SizeFToPosition(mRenderTarget->GetSize());
-    mCamera->SetPosition(size * 0.5f);
-    mCamera->SetViewRange(mRenderTarget);
+
+    mCamera->SetMainWindowSize(mRenderTarget);
 }
 
 void GameFrame::InitImgui() {
@@ -157,18 +163,28 @@ void GameFrame::InitObjects() {
             return true; 
         }
     );
+
+    mTestMapImage = std::make_unique<Image>(std::wstring_view{ L"Asset/samplemap.png" });
+
+    mSprite = std::make_unique<Sprite>(L"Asset/Explosions.png", D2D1::SizeU(9, 1));
+    mSprite->ChangeDuration(1.0f);
 }
 
 void GameFrame::ResetSize() {
     auto rc = mMainWindow->GetRect();
     Size resizedSize = D2D1::SizeU(rc.right - rc.left, rc.bottom - rc.top);
-    mCamera->SetViewRange(mRenderTarget);
     mRenderTarget->Resize(resizedSize);
-    mGuiWindow->SetMainWindowSize(mCamera->GetViewRange());
+    mCamera->SetMainWindowSize(mRenderTarget);
+    mGuiWindow->SetMainWindowSize(mCamera->GetMainWindowSize());
 }
 
 void GameFrame::Update() {
     Timer::AdvanceTime();
+    const float deltaTime = Timer::GetDeltaTime<float>();
+    mSprite->Update(deltaTime);
+
+    mCamera->Update(Timer::GetDeltaTime());
+    mCamera->Clamp(TEMP_MAP_LT, TEMP_MAP_RB);
 }
 
 void GameFrame::ImguiRenderStart() {
@@ -182,17 +198,27 @@ void GameFrame::PrepareRender() {
     ImguiRenderStart();
     mRenderTarget->BeginDraw();
     mRenderTarget->Clear(Color(D2D1::ColorF::Gray));
-    mRenderTarget->SetTransform(mCamera->GetCameraTransform());
+
+    mCamera->UpdateViewMatrix(mRenderTarget);
 }
 
 void GameFrame::Render() {
     PrepareRender();
 
+    mTestMapImage->Render(mRenderTarget, CENTER_OF_MAP);
+
+    static Position spritePos = CENTER_OF_MAP;
+    static auto rotAngle = Timer::GetDeltaTime();
+    rotAngle += Timer::GetDeltaTime() * 200.0f;
+
+    spritePos += Position(0.01f, 0.01f);
+    mSprite->Render(mRenderTarget, spritePos, rotAngle);
+
     mTextWriter->SetFont(DEFAULT_FONT_KEY);
-    mTextWriter->WriteText(mRenderTarget, STATIC_DEBUG_TEXT_FRAME, L"문자 출력 테스트");
+    mTextWriter->WriteText(mRenderTarget, CENTER_OF_MAP, L"문자 출력 테스트");
 
     mTextWriter->SetFont(1);
-    mTextWriter->WriteColorText(mRenderTarget, STATIC_DEBUG_TEXT_FRAME + Position{ 0.0f, 40.0f }, L"Test [ChainsawCarnage.ttf]: \nABCDEFGHIJKLMN\nOPQRSTUVWXYZ", D2D1::ColorF::Red);
+    mTextWriter->WriteColorText(mRenderTarget, Position{ 0.0f, 40.0f }, L"Test [ChainsawCarnage.ttf]", D2D1::ColorF::Red);
 
     mGuiWindow->Render();
 

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <queue>
 
 //////////////////////////////////////////////////////////////////////////
 //																		//
@@ -8,6 +9,11 @@
 //																		//
 //////////////////////////////////////////////////////////////////////////
 
+constexpr Position TEMP_MAP_AREA = Position{ 1920.0f, 1920.0f };
+constexpr Position CENTER_OF_MAP = Position{ 0.0f, 0.0f };
+const Position TEMP_MAP_LT = -TEMP_MAP_AREA * 0.5f;
+const Position TEMP_MAP_RB = TEMP_MAP_AREA * 0.5f;
+
 class GameFrame {
 public:
     GameFrame(HINSTANCE instance);
@@ -15,6 +21,7 @@ public:
 
 public:
     SizeF GetCoordRate() const;
+    std::unique_ptr<class Camera>& GetMainCamera();
     
 public:
     void Init();
@@ -42,6 +49,10 @@ private:
 
     std::unique_ptr<class TextWriter> mTextWriter;      /* 텍스트 로딩용 클래스*/
     std::unique_ptr<class Camera> mCamera;              /* 카메라 */
+
+    std::unique_ptr<class Image> mTestMapImage;
+
+    std::unique_ptr<class Sprite> mSprite;
 
     std::unique_ptr<class ChatWindow> mGuiWindow;
 

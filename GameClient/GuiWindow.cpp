@@ -63,11 +63,11 @@ void GuiWindow::SetPosition(const ImVec2& pos) {
 }
 
 void GuiWindow::SetPosCameraLeftBottom(Size windowSize) {
-    auto ySize = mWindowSize.y + 40.0f; 
+    mWindowSize.x = windowSize.width * 0.25f;
+    mWindowSize.y = windowSize.height * 0.33f;
+    auto ySize = mWindowSize.y; 
     auto yPos = windowSize.height - ySize;
-    if (windowSize.height / 2.0f < yPos) {
-        yPos = windowSize.height / 2.0f;
-    }
+
     SetPosition(ImVec2{ 0.0f, yPos });
 }
 

@@ -21,6 +21,9 @@ struct Position : public D2D1_POINT_2F {
     constexpr Position() : D2D1_POINT_2F{ 0.0f, 0.0f } {}
     constexpr Position(float x, float y) : D2D1_POINT_2F{ x, y } { }
 
+    template <typename T> requires std::is_arithmetic_v<T>
+    Position(T x, T y) : D2D1_POINT_2F{ static_cast<float>(x), static_cast<float>(y) } { }
+
     Position(const Position& other) : D2D1_POINT_2F{ other.x, other.y } {}
     Position(Position&& other) noexcept : D2D1_POINT_2F{ other.x, other.y } {}
     Position& operator=(const Position& other) { x = other.x; y = other.y; return *this; }
@@ -48,6 +51,10 @@ struct Position : public D2D1_POINT_2F {
 
     friend Position operator*(float scalar, const Position& pos) { return Position{ pos.x * scalar, pos.y * scalar }; }
 
+    Position Scale(const SizeF& scale) {
+        return Position{ x * scale.width, y * scale.height };
+    }
+
     float LengthSq() const {
         return x * x + y * y;
     }
@@ -58,6 +65,10 @@ struct Position : public D2D1_POINT_2F {
 
     float Dot(const Position& other) {
         return other.x * x + other.y * y;
+    }
+
+    static float DistSq(const Position& pos1, const Position& pos2) {
+        return (pos1 - pos2).LengthSq();
     }
 
     static float Dot(const Position& pos1, const Position& pos2) {

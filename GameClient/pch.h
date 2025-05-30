@@ -3,6 +3,7 @@
 #include "targetver.h"
 
 #include <Windows.h>
+#include <windowsx.h>
 
 /* Direct2D Library */
 #include <d2d1_1.h>                 /* Direct2D API */

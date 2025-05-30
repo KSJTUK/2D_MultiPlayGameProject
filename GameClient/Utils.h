@@ -68,6 +68,16 @@ inline D2D1_POINT_2F operator*(const D2D1_POINT_2F& p, float scalar)
 	return D2D1::Point2F(p.x * scalar, p.y * scalar);
 }
 
+inline D2D1_SIZE_F operator*(const D2D1_SIZE_F& size, float scalar)
+{
+	return D2D1::SizeF(size.width * scalar, size.height * scalar);
+}
+
+inline D2D1_SIZE_F operator*(float scalar, const D2D1_SIZE_F& size)
+{
+	return D2D1::SizeF(size.width * scalar, size.height * scalar);
+}
+
 inline Position SizeFToPosition(const D2D1_SIZE_F& size)
 {
 	return Position{ size.width, size.height };

@@ -1,10 +1,10 @@
 ﻿#include "pch.h"
 #include "Sprite.h"
-#include "ImageLoader.h"
+#include "ImageFactory.h"
+#include "Utils.h"
 
-Sprite::Sprite(const ComPtr<ID2D1Factory>& factory, const ComPtr<IWICImagingFactory>& wicFactory, const ComPtr<ID2D1HwndRenderTarget>& renderTarget,
-    std::string_view path, Size maxFrame, size_t frameEndWidth) : mFrameCount{ 0 }, mMaxFrameCount{ maxFrame }, mFrameEnd{ frameEndWidth } {
-    mImage = Img::ImageLoad(factory, wicFactory, renderTarget, to_wstring(path));
+Sprite::Sprite(std::string_view path, Size maxFrame, size_t frameEndWidth) : mFrameCount{ 0 }, mMaxFrameCount{ maxFrame }, mFrameEnd{ frameEndWidth } {
+    mImage = ImageFactory::ImageLoad(to_wstring(path));
 
     auto [px, py] = mImage->GetPixelSize();
     mFrameSize = D2D1::SizeU(px / maxFrame.width, py / maxFrame.height);
@@ -14,9 +14,8 @@ Sprite::Sprite(const ComPtr<ID2D1Factory>& factory, const ComPtr<IWICImagingFact
     }
 }
 
-Sprite::Sprite(const ComPtr<ID2D1Factory>& factory, const ComPtr<IWICImagingFactory>& wicFactory, const ComPtr<ID2D1HwndRenderTarget>& renderTarget,
-    std::wstring_view path, Size maxFrame, size_t frameEndWidth) : mFrameCount{ 0 }, mMaxFrameCount{ maxFrame }, mFrameEnd{ frameEndWidth } {
-    mImage = Img::ImageLoad(factory, wicFactory, renderTarget, path);
+Sprite::Sprite(std::wstring_view path, Size maxFrame, size_t frameEndWidth) : mFrameCount{ 0 }, mMaxFrameCount{ maxFrame }, mFrameEnd{ frameEndWidth } {
+    mImage = ImageFactory::ImageLoad(path);
 
     auto [px, py] = mImage->GetPixelSize();
     mFrameSize = D2D1::SizeU(px / maxFrame.width, py / maxFrame.height);
@@ -36,6 +35,10 @@ Sprite::Sprite(ComPtr<ID2D1Bitmap> image, Size maxFrame, size_t frameEndWidth) :
         mFrameEnd = mMaxFrameCount.width + mMaxFrameCount.height;
     }
 }
+
+Sprite::Sprite(const Sprite& other)
+    : mImage{ other.mImage }, mDuration{ other.mDuration }, mFramePerSecond{ other.mFramePerSecond }, mMaxFrameCount{ other.mMaxFrameCount },
+        mFrameCount{ 0 }, mFrameEnd{ other.mFrameEnd }, mFrameSize{ other.mFrameSize } { }
 
 void Sprite::ChangeDuration(float duration) {
     mDuration = duration;
@@ -58,7 +61,7 @@ void Sprite::AdvanceFrame() {
     }
 }
 
-void Sprite::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POINT_2F position, float rotAngle, float opacity) {
+void Sprite::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, Position position, float rotAngle, float opacity) {
     /* 그릴 대상의 프레임 정보를 계산 */
     long frameX = mFrameCount % mMaxFrameCount.width;
     long frameY = mFrameCount / mMaxFrameCount.width;
@@ -82,7 +85,7 @@ void Sprite::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POIN
     renderTarget->SetTransform(oldTrans);
 }
 
-SpriteProperties::SpriteProperties(std::string_view tag, const Size& frameSize, const Size& imageSize, unsigned short frameCount)
+SpriteProperties::SpriteProperties(std::string_view tag, std::wstring_view path, const Size& frameSize, const Size& imageSize, unsigned short frameCount)
     : tag{ tag }, frameSize{ frameSize }, maxFrameCount{ frameCount } {
     framePixelSize = D2D1::Size(imageSize.width / frameSize.width, imageSize.height / frameSize.height);
     if (0 == maxFrameCount) {

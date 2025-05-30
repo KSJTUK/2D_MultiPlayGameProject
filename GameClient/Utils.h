@@ -44,11 +44,6 @@ inline D2D1::ColorF Color(unsigned long colorRGB, float alpha = 1.0f)
 	return D2D1::ColorF{ colorRGB, alpha };
 }
 
-inline D2D1_POINT_2F operator+(const D2D1_POINT_2F& p1, const D2D1_POINT_2F& p2)
-{
-	return D2D1::Point2F(p1.x + p2.x, p1.y + p2.y);
-}
-
 inline D2D1::ColorF ComplementaryColor(const D2D1::ColorF::Enum& colorEnum, float alpha = 1.0f)
 {
 	BYTE byteMax{ 0xFF };
@@ -73,9 +68,9 @@ inline D2D1_POINT_2F operator*(const D2D1_POINT_2F& p, float scalar)
 	return D2D1::Point2F(p.x * scalar, p.y * scalar);
 }
 
-inline D2D1_POINT_2F SizeFToPosition(const D2D1_SIZE_F& size)
+inline Position SizeFToPosition(const D2D1_SIZE_F& size)
 {
-	return D2D1::Point2F(size.width, size.height);
+	return Position{ size.width, size.height };
 }
 
 inline D2D1_RECT_F CreateRectF(const Position& pos, const SizeF& size)

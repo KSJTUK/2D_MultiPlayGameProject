@@ -76,9 +76,6 @@
     <ClInclude Include="Image.h">
       <Filter>RenderingPart\Image</Filter>
     </ClInclude>
-    <ClInclude Include="ImageLoader.h">
-      <Filter>RenderingPart\Image</Filter>
-    </ClInclude>
     <ClInclude Include="Sprite.h">
       <Filter>RenderingPart\Image</Filter>
     </ClInclude>
@@ -92,9 +89,6 @@
       <Filter>RenderingPart\Effect</Filter>
     </ClInclude>
     <ClInclude Include="InputBuffer.h">
-      <Filter>RenderingPart\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="RingBuffer.h">
       <Filter>RenderingPart\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="Random.h">
@@ -151,6 +145,9 @@
     <ClInclude Include="External\imgui\imstb_truetype.h">
       <Filter>RenderingPart\Imgui</Filter>
     </ClInclude>
+    <ClInclude Include="ImageFactory.h">
+      <Filter>RenderingPart\Image</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -168,9 +165,6 @@
     <ClCompile Include="Image.cpp">
       <Filter>RenderingPart\Image</Filter>
     </ClCompile>
-    <ClCompile Include="ImageLoader.cpp">
-      <Filter>RenderingPart\Image</Filter>
-    </ClCompile>
     <ClCompile Include="Sprite.cpp">
       <Filter>RenderingPart\Image</Filter>
     </ClCompile>
@@ -184,9 +178,6 @@
       <Filter>RenderingPart\Effect</Filter>
     </ClCompile>
     <ClCompile Include="InputBuffer.cpp">
-      <Filter>RenderingPart\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="RingBuffer.cpp">
       <Filter>RenderingPart\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="Random.cpp">
@@ -239,6 +230,9 @@
     </ClCompile>
     <ClCompile Include="External\imgui\imgui_widgets.cpp">
       <Filter>RenderingPart\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageFactory.cpp">
+      <Filter>RenderingPart\Image</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

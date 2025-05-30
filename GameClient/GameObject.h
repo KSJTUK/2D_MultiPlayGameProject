@@ -5,6 +5,7 @@
 class GameObject {
 public:
     GameObject();
+    GameObject(std::unique_ptr<IRenderingComponent>&& renderer);
     ~GameObject();
 
 public:

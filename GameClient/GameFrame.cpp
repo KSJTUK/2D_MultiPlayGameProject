@@ -10,6 +10,7 @@
 #include "Timer.h"
 
 #include "GuiWindow.h"
+#include "ImageFactory.h"
 
 #include "FadeEffect.h"
 
@@ -38,6 +39,7 @@ GameFrame::~GameFrame() {
     ImGui::DestroyContext();
 
     SolidBrush::Destroy();
+    ImageFactory::Destroy();
 }
 
 SizeF GameFrame::GetCoordRate() const {
@@ -52,7 +54,6 @@ SizeF GameFrame::GetCoordRate() const {
 
 void GameFrame::Init() {
     InitDirect2D();
-    InitWIC();
     InitCamera();
     InitText();
     InitImgui();
@@ -90,13 +91,8 @@ void GameFrame::InitDirect2D() {
    CheckHR(hr);
 
    SolidBrush::Init(mRenderTarget);
-}
 
-void GameFrame::InitWIC() {
-    HRESULT hr;
-
-    hr = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(mWICFactory.GetAddressOf()));
-    CheckHR(hr);
+   ImageFactory::Init(mD2Factory, mRenderTarget);
 }
 
 void GameFrame::InitCamera() {
@@ -152,24 +148,15 @@ void GameFrame::InitText() {
 }
 
 void GameFrame::InitObjects() {
-    mTimer = std::make_unique<Timer>();
-
-    mTimer->AddEvent(
+    Timer::AddEvent(
         1s,
         [this]() { 
-            static auto prevCount = mTimer->GetFrameCount();
-            mGuiWindow->InputText(L"FPS: "s + std::to_wstring(mTimer->GetFrameCount() - prevCount));
-            prevCount = mTimer->GetFrameCount();
+            static auto prevCount = Timer::GetFrameCount();
+            mGuiWindow->InputText(L"FPS: "s + std::to_wstring(Timer::GetFrameCount() - prevCount));
+            prevCount = Timer::GetFrameCount();
             return true; 
         }
     );
-
-    mSprite = std::make_unique<Sprite>(mD2Factory, mWICFactory, mRenderTarget, L"Asset/Explosions.png", D2D1::SizeU(9, 1));
-    mSprite->ChangeDuration(1.0f);
-    for (int i = 0; i < 500; ++i) {
-        mSprites.emplace_back(std::make_unique<Sprite>(mD2Factory, mWICFactory, mRenderTarget, L"Asset/Explosions.png", D2D1::SizeU(9, 1)));
-        mSprites.back()->ChangeDuration(static_cast<float>(rand() % 100) / 100.0f);
-    }
 }
 
 void GameFrame::ResetSize() {
@@ -181,12 +168,7 @@ void GameFrame::ResetSize() {
 }
 
 void GameFrame::Update() {
-    mTimer->AdvanceTime();
-    const float deltaTime = mTimer->GetDeltaTime<float>();
-    mSprite->Update(deltaTime);
-    for (auto& sprite : mSprites) {
-        sprite->Update(deltaTime);
-    }
+    Timer::AdvanceTime();
 }
 
 void GameFrame::ImguiRenderStart() {
@@ -206,22 +188,13 @@ void GameFrame::PrepareRender() {
 void GameFrame::Render() {
     PrepareRender();
 
-    static auto rotAngle = mTimer->GetDeltaTime();
-    rotAngle += mTimer->GetDeltaTime() * 200.0f;
-    mSprite->Render(mRenderTarget, D2D1_POINT_2F{ 0.0f, 0.0f }, rotAngle);
-    //for (size_t pos{ }; auto& sprite : mSprites) {
-    //    sprite->Render(mRenderTarget, D2D1_POINT_2F{ -(DEFAULT_WINDOW_SIZE.width / 2.0f) + (pos % 30) * 50.0f,
-    //        -(DEFAULT_WINDOW_SIZE.height / 2.0f) + (pos / 30) * 50.0f }, rotAngle, 0.5f);
-    //    ++pos;
-    //}
-
-    mGuiWindow->Render();
-
     mTextWriter->SetFont(DEFAULT_FONT_KEY);
     mTextWriter->WriteText(mRenderTarget, STATIC_DEBUG_TEXT_FRAME, L"문자 출력 테스트");
 
     mTextWriter->SetFont(1);
     mTextWriter->WriteColorText(mRenderTarget, STATIC_DEBUG_TEXT_FRAME + Position{ 0.0f, 40.0f }, L"Test [ChainsawCarnage.ttf]: \nABCDEFGHIJKLMN\nOPQRSTUVWXYZ", D2D1::ColorF::Red);
+
+    mGuiWindow->Render();
 
     RenderEnd();
 }

@@ -1,15 +1,14 @@
 ﻿#include "pch.h"
 #include "Image.h"
-#include "ImageLoader.h"
+#include "ImageFactory.h"
+#include "Utils.h"
 
-Image::Image(const ComPtr<ID2D1Factory>& factory, const ComPtr<IWICImagingFactory>& wicFactory,
-    const ComPtr<ID2D1HwndRenderTarget>& renderTarget, std::wstring_view path) {
-    mImage = Img::ImageLoad(factory, wicFactory, renderTarget, path);
+Image::Image(std::wstring_view path) {
+    mImage = ImageFactory::ImageLoad(path);
 }
 
-Image::Image(const ComPtr<ID2D1Factory>& factory, const ComPtr<IWICImagingFactory>& wicFactory,
-    const ComPtr<ID2D1HwndRenderTarget>& renderTarget, std::string_view path) {
-    mImage = Img::ImageLoad(factory, wicFactory, renderTarget, to_wstring(path));
+Image::Image(std::string_view path) {
+    mImage = ImageFactory::ImageLoad(to_wstring(path));
 }
 
 Image::Image(ComPtr<ID2D1Bitmap> image) {
@@ -18,7 +17,7 @@ Image::Image(ComPtr<ID2D1Bitmap> image) {
 
 void Image::Update(float deltaTime) { }
 
-void Image::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, D2D1_POINT_2F position, float rotAngle, float opacity) {
+void Image::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget, Position position, float rotAngle, float opacity) {
     Matrix3x2 oldTrans;
     renderTarget->GetTransform(&oldTrans);
     /* 출력 대상 지점의 중심을 기준으로 회전 */

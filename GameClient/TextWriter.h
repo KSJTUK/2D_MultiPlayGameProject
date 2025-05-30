@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-inline constexpr Position STATIC_DEBUG_TEXT_FRAME = Position{ 300.0f, -300.0f };
+inline constexpr Position STATIC_DEBUG_TEXT_FRAME{ 300.0f, -300.0f };
 static constexpr float DEFAULT_FONT_SIZE = 15.0f;
 inline constexpr uint32_t DEFAULT_FONT_KEY = 0;
 

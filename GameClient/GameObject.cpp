@@ -3,6 +3,8 @@
 
 GameObject::GameObject() { }
 
+GameObject::GameObject(std::unique_ptr<IRenderingComponent>&& renderer) : mRenderer{ std::move(renderer) } { }
+
 GameObject::~GameObject() { }
 
 bool GameObject::IsActive() const {
@@ -30,8 +32,7 @@ void GameObject::AddRot(float rot) {
 }
 
 void GameObject::AddPos(Position vec) {
-    mPosition.x += vec.x;
-    mPosition.y += vec.y;
+    mPosition += vec;
 }
 
 void GameObject::Update(float deltaTime) { 

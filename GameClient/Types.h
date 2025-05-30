@@ -7,7 +7,6 @@ using RectF = D2D1_RECT_F;
 using RectL = D2D1_RECT_L;
 
 using Point = D2D1_POINT_2L;
-using Position = D2D1_POINT_2F;
 using Vec2D = D2D1_VECTOR_2F;
 using Vec3D = D2D1_VECTOR_3F;
 
@@ -19,32 +18,33 @@ template <typename T>
 using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 struct Position : public D2D1_POINT_2F {
-    Position() : D2D1_POINT_2F{ 0.0f, 0.0f } {}
-    Position(float x, float y) : D2D1_POINT_2F{ x, y } {}
+    constexpr Position() : D2D1_POINT_2F{ 0.0f, 0.0f } {}
+    constexpr Position(float x, float y) : D2D1_POINT_2F{ x, y } { }
+
     Position(const Position& other) : D2D1_POINT_2F{ other.x, other.y } {}
     Position(Position&& other) noexcept : D2D1_POINT_2F{ other.x, other.y } {}
     Position& operator=(const Position& other) { x = other.x; y = other.y; return *this; }
     Position& operator=(Position&& other) noexcept { x = other.x; y = other.y; return *this; }
 
-    Position operator+(const Position& other) { return Position{ x + other.x, y + other.y }; }
+    Position operator+(const Position& other) const { return Position{ x + other.x, y + other.y }; }
     void operator+=(const Position& other) { x += other.x; y += other.y; }
 
-    Position operator-(const Position& other) { return Position{ x - other.x, y - other.y }; }
+    Position operator-(const Position& other) const { return Position{ x - other.x, y - other.y }; }
     void operator-=(const Position& other) { x -= other.x; y -= other.y; }
 
     Position& operator=(const D2D1_POINT_2F& other) { x = other.x; y = other.y; return *this; }
     Position& operator=(D2D1_POINT_2F&& other) noexcept { x = other.x; y = other.y; return *this; }
 
-    Position operator+(const D2D1_POINT_2F& other) { return Position{ x + other.x, y + other.y }; }
+    Position operator+(const D2D1_POINT_2F& other) const { return Position{ x + other.x, y + other.y }; }
     void operator+=(const D2D1_POINT_2F& other) { x += other.x; y += other.y; }
 
-    Position operator-(const D2D1_POINT_2F& other) { return Position{ x - other.x, y - other.y }; }
+    Position operator-(const D2D1_POINT_2F& other) const { return Position{ x - other.x, y - other.y }; }
     void operator-=(const D2D1_POINT_2F& other) { x -= other.x; y -= other.y; }
 
-    Position operator*(float scalar) { return Position{ x * scalar, y * scalar }; }
+    Position operator*(float scalar) const { return Position{ x * scalar, y * scalar }; }
     void operator*=(float scalar) { x *= scalar; y *= scalar; }
 
-    Position operator-() { return Position{ -x, -y }; }
+    Position operator-() const { return Position{ -x, -y }; }
 
     friend Position operator*(float scalar, const Position& pos) { return Position{ pos.x * scalar, pos.y * scalar }; }
 
@@ -62,5 +62,9 @@ struct Position : public D2D1_POINT_2F {
 
     static float Dot(const Position& pos1, const Position& pos2) {
         return pos1.x * pos2.x + pos1.y * pos2.y;
+    }
+
+    operator D2D1_POINT_2F() {
+        return D2D1_POINT_2F{ x, y };
     }
 };

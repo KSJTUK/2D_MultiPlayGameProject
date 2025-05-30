@@ -43,12 +43,12 @@ private:
 	};
 
 public:
-	Timer();
-	~Timer();
+	Timer() = delete;
+	~Timer() = delete;
 
 	template<typename ResultTy = float, TimeUnit Tu = std::chrono::seconds>
 	[[nodiscard]]
-	ResultTy GetDeltaTime(scaled sc = scaled::result_time_unscaled) {
+	static ResultTy GetDeltaTime(scaled sc = scaled::result_time_unscaled) {
 		if (sc == scaled::result_time_scaled) {
 			return std::chrono::duration_cast<std::chrono::duration<ResultTy, typename Tu::period>>(mDeltaTime * mTimeScale).count();
 		}
@@ -58,7 +58,7 @@ public:
 
 	template<typename ResultTy = float, TimeUnit Tu = std::chrono::seconds>
 	[[nodiscard]]
-	ResultTy GetTimeSinceStarted(scaled sc = scaled::result_time_unscaled) {
+	static ResultTy GetTimeSinceStarted(scaled sc = scaled::result_time_unscaled) {
 		if (sc == scaled::result_time_scaled) {
 			return std::chrono::duration_cast<std::chrono::duration<ResultTy, typename Tu::period>>(mScaledStarted).count();
 		}
@@ -69,14 +69,14 @@ public:
 
 	template<typename ResultTy = double, TimeUnit Tu = std::chrono::seconds>
 	[[nodiscard]]
-	ResultTy GetTimeSinceSceneStarted() {
+	static ResultTy GetTimeSinceSceneStarted() {
 		duration Elapsed = clock::now() - mSceneStarted;
 		return std::chrono::duration_cast<std::chrono::duration<ResultTy, typename Tu::period>>(Elapsed).count();
 	}
 
 	template<typename ResultTy = float, TimeUnit Tu = std::chrono::seconds>
 	[[nodiscard]]
-	ResultTy GetSmoothDeltaTime() {
+	static ResultTy GetSmoothDeltaTime() {
 		auto sumofSamples = std::accumulate(mDeltaTimeBuffer.begin(), mDeltaTimeBuffer.end(), duration::zero(),
 			[](const duration& a, const duration& b) {
 				if (b.count() <= 0.0)
@@ -87,37 +87,37 @@ public:
 	}
 
 	template<typename rep, typename period>
-	void AddEvent(std::chrono::duration<rep, period> time, std::function<bool()>&& callBack) {
+	static void AddEvent(std::chrono::duration<rep, period> time, std::function<bool()>&& callBack) {
 		mEvents.emplace(clock::now() + time, std::chrono::duration_cast<std::chrono::nanoseconds>(time), std::move(callBack));
 	}
 
 	[[maybe_unused]]
-	double SetTimeScale(double scale = 1.0);
-	double GetTimeScale();
-	uint64_t GetFrameCount();
+	static double SetTimeScale(double scale = 1.0);
+	static double GetTimeScale();
+	static uint64_t GetFrameCount();
 
-	void AdvanceTime();
-	void StartSceneTime();
-
-private:
-	void UpdateDeltaTime();
-	void AddScaledStarted();
-	void SampleDeltaTime();
-	bool PopEvent();
-	void CheckEvent();
+	static void AdvanceTime();
+	static void StartSceneTime();
 
 private:
-	duration				mDeltaTime{};
-	duration				mScaledStarted{};
-	UINT					mDeltaTimeSampleingIndex = 0;
+	static void UpdateDeltaTime();
+	static void AddScaledStarted();
+	static void SampleDeltaTime();
+	static bool PopEvent();
+	static void CheckEvent();
 
-	uint64_t				mFrameCount{ 0 };
-
-	time_point				mPrev{ clock::now() };
-	time_point 				mSceneStarted{ clock::now() };
-	const time_point		mAbsoluteStarted{ clock::now() };
-	double					mTimeScale{ 1.0 };
-
-	std::set<Event>			mEvents{ };
-	std::array<duration, mDeltaTimeBufferSize> mDeltaTimeBuffer{};
+private:
+	inline static duration				mDeltaTime{};
+	inline static duration				mScaledStarted{};
+	inline static UINT					mDeltaTimeSampleingIndex = 0;
+	
+	inline static uint64_t				mFrameCount{ 0 };
+	
+	inline static time_point				mPrev{ clock::now() };
+	inline static time_point 				mSceneStarted{ clock::now() };
+	inline static const time_point		mAbsoluteStarted{ clock::now() };
+	inline static double					mTimeScale{ 1.0 };
+	
+	inline static std::set<Event>			mEvents{ };
+	inline static std::array<duration, mDeltaTimeBufferSize> mDeltaTimeBuffer{};
 };

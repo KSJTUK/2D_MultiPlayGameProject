@@ -1,16 +1,11 @@
 ﻿#include "pch.h"
 #include "Timer.h"
 
-Timer::Timer() { }
-
-Timer::~Timer() {}
-
 double Timer::SetTimeScale(double scale) {
 	auto temp = mTimeScale;
 	mTimeScale = scale;
 	return temp;
 }
-
 
 double Timer::GetTimeScale() {
 	return mTimeScale;
@@ -39,6 +34,7 @@ void Timer::UpdateDeltaTime() {
 	mPrev = now;
 	mFrameCount++;
 }
+
 void Timer::AddScaledStarted() {
 	mScaledStarted += mDeltaTime * mTimeScale;
 }

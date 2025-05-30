@@ -5,7 +5,7 @@ inline std::wstring to_wstring(std::string_view str)
 	return std::wstring{ str.begin(), str.end() };
 }
 
-inline void CheckHR(const HRESULT& hr, const std::source_location& location)
+inline void CheckHR(const HRESULT& hr, const std::source_location& location=std::source_location::current())
 {
 	if (FAILED(hr)) {
 		_com_error err{ hr };

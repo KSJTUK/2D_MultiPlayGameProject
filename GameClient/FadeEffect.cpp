@@ -34,12 +34,6 @@ void FadeEffect::Update(const float deltaTime) {
     else if (mFadeType == FADE_OUT) {
         mAlpha = std::clamp(mAlpha + (deltaTime / mDuration), 0.0f, 1.0f);
     }
-
-    // TEST
-    if (mCount >= mDuration) {
-        FadeType type = GetCurrentFadeType() == FADE_IN ? FADE_OUT : FADE_IN;
-        ChangeEffect(type);
-    }
 }
 
 void FadeEffect::Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarget) {

@@ -10,18 +10,18 @@ namespace Img {
 
         IWICFormatConverter* formatConverter;
         hr = wicFactory->CreateFormatConverter(&formatConverter);
-        CheckHR(hr, std::source_location::current());
+        CheckHR(hr);
 
         IWICBitmapDecoder* decoder;
         hr = wicFactory->CreateDecoderFromFilename(path.data(), NULL, GENERIC_READ, WICDecodeMetadataCacheOnDemand, &decoder);
-        CheckHR(hr, std::source_location::current());
+        CheckHR(hr);
 
         IWICBitmapFrameDecode* frame;
         hr = decoder->GetFrame(0, &frame);
-        CheckHR(hr, std::source_location::current());
+        CheckHR(hr);
 
         hr = formatConverter->Initialize(frame, GUID_WICPixelFormat32bppPRGBA, WICBitmapDitherTypeNone, NULL, 0.0f, WICBitmapPaletteTypeMedianCut);
-        CheckHR(hr, std::source_location::current());
+        CheckHR(hr);
 
         ComPtr<ID2D1Bitmap> bitmap;
         hr = renderTarget->CreateBitmapFromWicBitmap(
@@ -29,7 +29,7 @@ namespace Img {
             NULL,
             bitmap.GetAddressOf()
         );
-        CheckHR(hr, std::source_location::current());
+        CheckHR(hr);
 
         decoder->Release();
         frame->Release();

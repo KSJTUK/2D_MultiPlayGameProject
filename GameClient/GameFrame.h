@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 //////////////////////////////////////////////////////////////////////////
 //																		//
@@ -38,16 +38,16 @@ private:
     HINSTANCE mInstance;
     std::unique_ptr<class Window> mMainWindow;
    
-    ComPtr<ID2D1Factory1> mD2Factory;                   /* Direct2D ÀÚ¿ø °´Ã¼ »ı¼ºÀ» À§ÇÑ Factory */
-    ComPtr<ID2D1HwndRenderTarget> mRenderTarget;        /* Window  ´ë»ó ·»´õÅ¸°Ù */
-    ComPtr<IWICImagingFactory> mWICFactory;             /* WIC °´Ã¼µéÀ» »ı¼ºÇÒ Factory */
+    ComPtr<ID2D1Factory1> mD2Factory;                   /* Direct2D ìì› ê°ì²´ ìƒì„±ì„ ìœ„í•œ Factory */
+    ComPtr<ID2D1HwndRenderTarget> mRenderTarget;        /* Window  ëŒ€ìƒ ë Œë”íƒ€ê²Ÿ */
+    ComPtr<IWICImagingFactory> mWICFactory;             /* WIC ê°ì²´ë“¤ì„ ìƒì„±í•  Factory */
 
-    std::unique_ptr<class TextWriter> mTextWriter;      /* ÅØ½ºÆ® ·Îµù¿ë Å¬·¡½º*/
-    std::unique_ptr<class Camera> mCamera;              /* Ä«¸Ş¶ó */
-    std::unique_ptr<class Timer> mTimer;                /* Å¸ÀÌ¸Ó */
+    std::unique_ptr<class TextWriter> mTextWriter;      /* í…ìŠ¤íŠ¸ ë¡œë”©ìš© í´ë˜ìŠ¤*/
+    std::unique_ptr<class Camera> mCamera;              /* ì¹´ë©”ë¼ */
+    std::unique_ptr<class Timer> mTimer;                /* íƒ€ì´ë¨¸ */
 
     std::unique_ptr<class Sprite> mSprite;
-    std::unique_ptr<class FadeEffect> mTestFade;
+    std::vector<std::unique_ptr<class Sprite>> mSprites;
 
     std::unique_ptr<class ChatWindow> mGuiWindow;
 

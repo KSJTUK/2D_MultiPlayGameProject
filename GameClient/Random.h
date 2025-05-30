@@ -33,17 +33,11 @@ public:
         return n(dre);
     }
 
-    template <typename VectorT, typename ValueT, size_t vecDim> requires std::is_arithmetic_v<ValueT> and std::is_constructible_v<VectorT, ValueT>
-    static VectorT RandVector(const ValueT min, const ValueT max) {
-        if constexpr (vecDim == 0) {
-            return 0;
-        }
-        else {
-            return RandVector<VectorT, ValueT, vecDim - 1>(min, max);
-        }
-    }
-
     static Position RandPos(Position min, Position max) {
         return Position{ UniformRand(min.x, max.x), UniformRand(min.y, max.y) };
+    }
+    
+    static Vec2D RandVec2D(const Vec2D& min, const Vec2D& max) {
+        return Vec2D{ UniformRand(min.x, max.x), UniformRand(min.y, max.y) };
     }
 };

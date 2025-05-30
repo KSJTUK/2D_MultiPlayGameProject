@@ -692,7 +692,7 @@ static int ImGui_ImplD2D_IsGlyph(ID2D1RenderTarget* renderTarget,
         codeRun.push_back(0);
         //std::wcerr << codepointRun.data() << std::endl << std::flush;
         HRESULT hresult = S_OK;
-        // should use smart com object for text format
+        // should use smart com object for text font
         IDWriteTextFormat* textFormat = NULL;
         // create for backend data
         if (backendData->Fonts->FontInMemoryLoader == NULL) {
@@ -1052,7 +1052,7 @@ ID2D1Bitmap* ImGui_Impl2D2_CreateTexture(ID2D1RenderTarget* renderTarget, IWICIm
     HRESULT hr = S_OK;
     if (SUCCEEDED(hr))
     {
-        // Convert the image format to 32bppPBGRA
+        // Convert the image font to 32bppPBGRA
         // (DXGI_FORMAT_B8G8R8A8_UNORM + D2D1_ALPHA_MODE_PREMULTIPLIED).
         hr = WICFactory->CreateFormatConverter(pConverter.GetAddressOf());
     }
@@ -1116,21 +1116,20 @@ ImTextureID ImGui_ImplD2D_LoadTexture(ID2D1RenderTarget* renderTarget, IWICImagi
     ImGui_ImplD2D_ComPtr<IWICBitmapDecoder> pDecoder;
     ImGui_ImplD2D_ComPtr<IWICStream> stream;
     HRESULT hr = S_OK;
-    if (SUCCEEDED(hr))
-    {
+    if (SUCCEEDED(hr)) {
         // Create a WIC stream to map onto the memory.
         hr = imagingFactory->CreateStream(stream.GetAddressOf());
     }
-    if (SUCCEEDED(hr))
-    {
+
+    if (SUCCEEDED(hr)) {
         // Initialize the stream with the memory pointer and size.
         hr = stream->InitializeFromMemory(
             (WICInProcPointer)imageData,
             imageDataSize
         );
     }
-    if (SUCCEEDED(hr))
-    {
+
+    if (SUCCEEDED(hr)) {
         // Create a decoder for the stream.
         hr = imagingFactory->CreateDecoderFromStream(
             stream.Get(),

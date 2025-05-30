@@ -79,15 +79,15 @@ void GameFrame::InitDirect2D() {
     );
 #endif
 
-    CheckHR(hr, std::source_location::current());
+    CheckHR(hr);
 
     auto rc = mMainWindow->GetRect();
     hr = mD2Factory->CreateHwndRenderTarget(
         D2D1::RenderTargetProperties(),
-        D2D1::HwndRenderTargetProperties(mMainWindow->GetHandle(), D2D1::SizeU(rc.right, rc.bottom)),
+        D2D1::HwndRenderTargetProperties(mMainWindow->GetHandle(), D2D1::SizeU(rc.right, rc.bottom), D2D1_PRESENT_OPTIONS_IMMEDIATELY),
         mRenderTarget.GetAddressOf()
    );
-   CheckHR(hr, std::source_location::current());
+   CheckHR(hr);
 
    SolidBrush::Init(mRenderTarget);
 }
@@ -96,7 +96,7 @@ void GameFrame::InitWIC() {
     HRESULT hr;
 
     hr = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(mWICFactory.GetAddressOf()));
-    CheckHR(hr, std::source_location::current());
+    CheckHR(hr);
 }
 
 void GameFrame::InitCamera() {
@@ -110,9 +110,10 @@ void GameFrame::InitImgui() {
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGuiIO& io = ImGui::GetIO();
     ImGui::GetStyle().ScaleAllSizes(1);
     io.FontGlobalScale = 1;
+    io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\malgun.ttf", 14.0f, nullptr, io.Fonts->GetGlyphRangesKorean());
 
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
@@ -123,7 +124,7 @@ void GameFrame::InitImgui() {
     ImGui::GetStyle().AntiAliasedLinesUseTex = false;
 
     // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
+    ImGui::StyleColorsClassic();
     // required styles
     ImGui::GetStyle().AntiAliasedLines = false;
 
@@ -141,24 +142,34 @@ void GameFrame::InitImgui() {
 
 void GameFrame::InitText() {
     mTextWriter = std::make_unique<TextWriter>();
+
+    FontProperties fontProp;
+
+    fontProp.fontFamilyName = L"Chainsaw Carnage";
+    fontProp.size = 30.0f;
+    fontProp.locale = L"en-US";
+    mTextWriter->LoadFontFromFile(1, "Asset/ChainsawCarnage.ttf", fontProp);
 }
 
 void GameFrame::InitObjects() {
     mTimer = std::make_unique<Timer>();
-    mSprite = std::make_unique<Sprite>(mD2Factory, mWICFactory, mRenderTarget, L"Asset/Explosions.png", D2D1::SizeU(9, 1));
-    mSprite->SetDuration(1.0f);
 
     mTimer->AddEvent(
         1s,
         [this]() { 
             static auto prevCount = mTimer->GetFrameCount();
-            mGuiWindow->InputText("FPS: "s + std::to_string(mTimer->GetFrameCount() - prevCount));
+            mGuiWindow->InputText(L"FPS: "s + std::to_wstring(mTimer->GetFrameCount() - prevCount));
             prevCount = mTimer->GetFrameCount();
             return true; 
         }
     );
 
-    mTestFade = std::make_unique<FadeEffect>(FADE_OUT);
+    mSprite = std::make_unique<Sprite>(mD2Factory, mWICFactory, mRenderTarget, L"Asset/Explosions.png", D2D1::SizeU(9, 1));
+    mSprite->ChangeDuration(1.0f);
+    for (int i = 0; i < 500; ++i) {
+        mSprites.emplace_back(std::make_unique<Sprite>(mD2Factory, mWICFactory, mRenderTarget, L"Asset/Explosions.png", D2D1::SizeU(9, 1)));
+        mSprites.back()->ChangeDuration(static_cast<float>(rand() % 100) / 100.0f);
+    }
 }
 
 void GameFrame::ResetSize() {
@@ -166,13 +177,16 @@ void GameFrame::ResetSize() {
     Size resizedSize = D2D1::SizeU(rc.right - rc.left, rc.bottom - rc.top);
     mCamera->SetViewRange(mRenderTarget);
     mRenderTarget->Resize(resizedSize);
+    mGuiWindow->SetMainWindowSize(mCamera->GetViewRange());
 }
 
 void GameFrame::Update() {
     mTimer->AdvanceTime();
     const float deltaTime = mTimer->GetDeltaTime<float>();
     mSprite->Update(deltaTime);
-    mTestFade->Update(deltaTime);
+    for (auto& sprite : mSprites) {
+        sprite->Update(deltaTime);
+    }
 }
 
 void GameFrame::ImguiRenderStart() {
@@ -191,12 +205,23 @@ void GameFrame::PrepareRender() {
 
 void GameFrame::Render() {
     PrepareRender();
-    // Render
-    mSprite->SetOpacity(1.0f);
-    mSprite->Render(mRenderTarget, Position{ 100, 200 });
-    mTestFade->Render(mRenderTarget);
+
+    static auto rotAngle = mTimer->GetDeltaTime();
+    rotAngle += mTimer->GetDeltaTime() * 200.0f;
+    mSprite->Render(mRenderTarget, D2D1_POINT_2F{ 0.0f, 0.0f }, rotAngle);
+    //for (size_t pos{ }; auto& sprite : mSprites) {
+    //    sprite->Render(mRenderTarget, D2D1_POINT_2F{ -(DEFAULT_WINDOW_SIZE.width / 2.0f) + (pos % 30) * 50.0f,
+    //        -(DEFAULT_WINDOW_SIZE.height / 2.0f) + (pos / 30) * 50.0f }, rotAngle, 0.5f);
+    //    ++pos;
+    //}
 
     mGuiWindow->Render();
+
+    mTextWriter->SetFont(DEFAULT_FONT_KEY);
+    mTextWriter->WriteText(mRenderTarget, STATIC_DEBUG_TEXT_FRAME, L"문자 출력 테스트");
+
+    mTextWriter->SetFont(1);
+    mTextWriter->WriteColorText(mRenderTarget, STATIC_DEBUG_TEXT_FRAME + Position{ 0.0f, 40.0f }, L"Test [ChainsawCarnage.ttf]: \nABCDEFGHIJKLMN\nOPQRSTUVWXYZ", D2D1::ColorF::Red);
 
     RenderEnd();
 }

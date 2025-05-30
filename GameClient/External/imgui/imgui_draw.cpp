@@ -2479,8 +2479,8 @@ void    ImFontAtlas::GetTexDataAsAlpha8(unsigned char** out_pixels, int* out_wid
 
 void    ImFontAtlas::GetTexDataAsRGBA32(unsigned char** out_pixels, int* out_width, int* out_height, int* out_bytes_per_pixel)
 {
-    // Convert to RGBA32 format on demand
-    // Although it is likely to be the most commonly used format, our font rendering is 1 channel / 8 bpp
+    // Convert to RGBA32 font on demand
+    // Although it is likely to be the most commonly used font, our font rendering is 1 channel / 8 bpp
     if (!TexPixelsRGBA32)
     {
         unsigned char* pixels = NULL;
@@ -2901,7 +2901,7 @@ static bool ImFontAtlasBuildWithStbTruetype(ImFontAtlas* atlas)
         buf_rects_out_n += src_tmp.GlyphsCount;
         buf_packedchars_out_n += src_tmp.GlyphsCount;
 
-        // Convert our ranges in the format stb_truetype wants
+        // Convert our ranges in the font stb_truetype wants
         ImFontConfig& cfg = atlas->ConfigData[src_i];
         src_tmp.PackRange.font_size = cfg.SizePixels * cfg.RasterizerDensity;
         src_tmp.PackRange.first_unicode_codepoint_in_range = 0;
@@ -3740,7 +3740,7 @@ void ImFont::GrowIndex(int new_size)
 }
 
 // x0/y0/x1/y1 are offset from the character upper-left layout position, in pixels. Therefore x0/y0 are often fairly close to zero.
-// Not to be mistaken with texture coordinates, which are held by u0/v0/u1/v1 in normalized format (0.0..1.0 on each texture axis).
+// Not to be mistaken with texture coordinates, which are held by u0/v0/u1/v1 in normalized font (0.0..1.0 on each texture axis).
 // 'cfg' is not necessarily == 'this->ConfigData' because multiple source fonts+configs can be used to build one target font.
 void ImFont::AddGlyph(const ImFontConfig* cfg, ImWchar codepoint, float x0, float y0, float x1, float y1, float u0, float v0, float u1, float v1, float advance_x)
 {

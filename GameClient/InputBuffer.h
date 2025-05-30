@@ -3,9 +3,9 @@
 template <typename T, size_t size>
 class InputBufferIterator {
 public:
-//#ifdef _HAS_CXX20
-//    using iterator_concept = std::random_access_iterator;
-//#endif
+#ifdef _HAS_CXX20
+    using iterator_concept = std::contiguous_iterator_tag;
+#endif
 
     using value_type = T;
     using reference = T&;

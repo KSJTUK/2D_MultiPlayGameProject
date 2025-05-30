@@ -23,11 +23,15 @@ public:
     ImVec2 GetWindowSize() const;
     ImVec4 GetBgColor() const;
     float GetBgAlpha() const;
-
+    
+    void SetMainWindowSize(Size windowSize);
     void SetTitle(std::string_view title);
     void SetWindowSize(const ImVec2& size);
     void SetBgColor(const ImVec4& color);
     void SetBgAlpha(const float alpha);
+
+    void SetPosition(const ImVec2& pos);
+    void SetPosCameraLeftBottom(Size windowSize);
 
 public:
     virtual void UpdateContents();
@@ -36,6 +40,8 @@ public:
 
 private:
     std::string mTitle{ "" };
+    Size mMainWindowSize{ DEFAULT_WINDOW_SIZE };
+
     ImGuiWindowFlags mWindowFlags{ };
     ImVec2 mWindowSize{ DEFAULT_SIZE };
     ImVec4 mBgColor{ };
@@ -87,9 +93,9 @@ public:
     ~ChatWindow();
 
 public:
-    void InputText(std::string_view str);
+    void InputText(std::wstring_view str);
     virtual void UpdateContents() override final;
 
 private:
-    InputBuffer<std::string, MAX_CHAT> mChatBuffer{ };
+    InputBuffer<std::wstring, MAX_CHAT> mChatBuffer{ };
 };

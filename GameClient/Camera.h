@@ -14,10 +14,13 @@ class Camera {
 public:
     Position GetPosition() const;
     Matrix3x2 GetCameraTransform() const;
+    Size GetViewRange() const;
 
     void SetPosition(const Position& position);
 
     void SetViewRange(const ComPtr<ID2D1HwndRenderTarget>& renderTarget);
+
+    void ViewMatrix(const ComPtr<ID2D1HwndRenderTarget>& renderTarget);
 
 private:
     /* 카메라 위치 */

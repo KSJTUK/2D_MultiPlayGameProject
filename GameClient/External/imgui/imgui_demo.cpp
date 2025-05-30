@@ -137,7 +137,7 @@ Index of this file:
 #pragma clang diagnostic ignored "-Wold-style-cast"                 // warning: use of old-style cast                           // yes, they are more terse.
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"        // warning: 'xx' is deprecated: The POSIX name for this..   // for strdup used in demo code (so user can copy & paste the code)
 #pragma clang diagnostic ignored "-Wint-to-void-pointer-cast"       // warning: cast to 'void *' from smaller integer type
-#pragma clang diagnostic ignored "-Wformat-security"                // warning: format string is not a string literal
+#pragma clang diagnostic ignored "-Wformat-security"                // warning: font string is not a string literal
 #pragma clang diagnostic ignored "-Wexit-time-destructors"          // warning: declaration requires an exit-time destructor    // exit-time destruction order is undefined. if MemFree() leads to users code that has been disabled before exit it might cause problems. ImGui coding style welcomes static/globals.
 #pragma clang diagnostic ignored "-Wunused-macros"                  // warning: macro is not used                               // we define snprintf/vsnprintf on Windows so they are available, but not always used.
 #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"  // warning: zero as null pointer constant                   // some standard header variations use #define NULL 0
@@ -148,7 +148,7 @@ Index of this file:
 #elif defined(__GNUC__)
 #pragma GCC diagnostic ignored "-Wpragmas"                  // warning: unknown option after '#pragma GCC diagnostic' kind
 #pragma GCC diagnostic ignored "-Wint-to-pointer-cast"      // warning: cast to pointer from integer of different size
-#pragma GCC diagnostic ignored "-Wformat-security"          // warning: format string is not a string literal (potentially insecure)
+#pragma GCC diagnostic ignored "-Wformat-security"          // warning: font string is not a string literal (potentially insecure)
 #pragma GCC diagnostic ignored "-Wdouble-promotion"         // warning: implicit conversion from 'float' to 'double' when passing argument to function
 #pragma GCC diagnostic ignored "-Wconversion"               // warning: conversion to 'xxxx' from 'xxxx' may alter its value
 #pragma GCC diagnostic ignored "-Wmisleading-indentation"   // [__GNUC__ >= 6] warning: this 'if' clause does not guard this statement      // GCC 6.0+ only. See #883 on GitHub.
@@ -924,8 +924,8 @@ static void ShowDemoWindowWidgets(ImGuiDemoWindowData* demo_data)
             static float angle = 0.0f;
             ImGui::SliderAngle("slider angle", &angle);
 
-            // Using the format string to display a name instead of an integer.
-            // Here we completely omit '%d' from the format string, so it'll only display a name.
+            // Using the font string to display a name instead of an integer.
+            // Here we completely omit '%d' from the font string, so it'll only display a name.
             // This technique can also be used with DragInt().
             IMGUI_DEMO_MARKER("Widgets/Basic/Slider (enum)");
             enum Element { Element_Fire, Element_Earth, Element_Air, Element_Water, Element_COUNT };
@@ -1131,7 +1131,7 @@ static void ShowDemoWindowWidgets(ImGuiDemoWindowData* demo_data)
                 ImGui::Unindent(ImGui::GetTreeNodeToLabelSpacing());
 
             // 'selection_mask' is dumb representation of what may be user-side selection state.
-            //  You may retain selection state inside or outside your objects in whatever format you see fit.
+            //  You may retain selection state inside or outside your objects in whatever font you see fit.
             // 'node_clicked' is temporary storage of what node we have clicked to process selection at the end
             /// of the loop. May be a pointer to your own node type, etc.
             static int selection_mask = (1 << 2);
@@ -2354,9 +2354,9 @@ static void ShowDemoWindowWidgets(ImGuiDemoWindowData* demo_data)
         // In practice, if you frequently use a given type that is not covered by the normal API entry points,
         // you can wrap it yourself inside a 1 line function which can take typed argument as value instead of void*,
         // and then pass their address to the generic function. For example:
-        //   bool MySliderU64(const char *label, u64* value, u64 min = 0, u64 max = 0, const char* format = "%lld")
+        //   bool MySliderU64(const char *label, u64* value, u64 min = 0, u64 max = 0, const char* font = "%lld")
         //   {
-        //      return SliderScalar(label, ImGuiDataType_U64, value, &min, &max, format);
+        //      return SliderScalar(label, ImGuiDataType_U64, value, &min, &max, font);
         //   }
 
         // Setup limits (as helper variables so we can take their address, as explained above)

@@ -1,6 +1,6 @@
 #pragma once
 
-struct SpriteInfo {
+struct SpriteProperties {
     std::string tag{ };
     std::wstring imagePath{ };
     float duration{ };
@@ -10,14 +10,8 @@ struct SpriteInfo {
 
     unsigned short maxFrameCount{ };
 
-    SpriteInfo() = delete;
-    SpriteInfo(std::string_view tag, const Size& frameSize, const Size& imageSize, unsigned short frameCount = 0)
-        : tag{ tag }, frameSize{ frameSize }, maxFrameCount{ frameCount } {
-        framePixelSize = D2D1::Size(imageSize.width / frameSize.width, imageSize.height / frameSize.height);
-        if (0 == maxFrameCount) {
-            maxFrameCount = frameSize.width + frameSize.height;
-        }
-    }
+    SpriteProperties() = delete;
+    SpriteProperties(std::string_view tag, const Size& frameSize, const Size& imageSize, unsigned short frameCount = 0);
 };
 
 class Sprite {
@@ -29,17 +23,14 @@ public:
     Sprite(ComPtr<ID2D1Bitmap> image, Size maxFrame, size_t frameEndWidth);
 
 public:
-    void SetDuration(float duration);
-    void SetOpacity(float opacity);
+    void ChangeDuration(float duration);
 
     void Update(float deltaTime);
     void AdvanceFrame();
-    void Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarger, D2D1_POINT_2F position);
-    void Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarger, D2D1_POINT_2F position, float rotAngle);
+    void Render(const ComPtr<ID2D1HwndRenderTarget>& renderTarger, D2D1_POINT_2F position, float rotAngle, float opacity=1.0f);
 
 private:
     ComPtr<ID2D1Bitmap> mImage{ };
-    float mOpacity{ 1.0f };
     Size mFrameSize{ };
     Size mMaxFrameCount{ };
 

@@ -59,4 +59,6 @@
 using namespace std::literals;
 using WINPROC = LRESULT(*)(HWND, UINT, WPARAM, LPARAM);
 
+constexpr Size DEFAULT_WINDOW_SIZE{ 1366, 768 };
+
 extern std::unique_ptr<class GameFrame> gGameFramework;
